@@ -31,18 +31,30 @@ dependencies:
   - apache-airflow>=2.7.0
   - azure-identity>=1.3.1
 
-# integrations:
-#   - integration-name: Microsoft Power BI
+integrations:
+  - integration-name: Microsoft Power BI
+  - integration-name: Microsoft Fabric
 
 operators:
   - integration-name: Microsoft Power BI
     python-modules:
       - airflow.providers.microsoft.powerbi.operators.powerbi
+  - integration-name: Microsoft Fabric
+    python-modules:
+      - airflow.providers.microsoft.powerbi.operators.fabric
 
 hooks:
   - integration-name: Microsoft Power BI
     python-modules:
       - airflow.providers.microsoft.powerbi.hooks.powerbi
+  - integration-name: Microsoft Fabric
+    python-modules:
+      - airflow.providers.microsoft.powerbi.hooks.fabric
+
+triggers:
+  - integration-name: Microsoft Power BI
+    python-modules:
+      - airflow.providers.microsoft.powerbi.triggers.FabricTrigger
 
 connection-types:
   - hook-class-name: airflow.providers.microsoft.powerbi.hooks.powerbi.PowerBIHook
@@ -50,3 +62,4 @@ connection-types:
 
 extra-links:
   - airflow.providers.microsoft.powerbi.operators.powerbi.PowerBILink
+  - airflow.providers.microsoft.powerbi.operators.fabric.FabricRunItemLink
