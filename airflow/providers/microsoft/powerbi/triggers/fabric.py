@@ -28,7 +28,18 @@ logger = logging.getLogger(__name__)
 
 
 class FabricTrigger(BaseTrigger):
-    """Trigger when a Fabric item run finishes."""
+    """
+    Trigger when a Fabric item run finishes.
+
+    :param fabric_conn_id: The connection ID to use when connecting to the Fabric service.
+    :param item_run_id: The item run ID.
+    :param workspace_id: The workspace ID.
+    :param item_id: The item ID.
+    :param job_type: The job type.
+    :param end_time: The end time for the trigger.
+    :param check_interval: The interval to check the status of the item run.
+    :param wait_for_termination: Whether to wait for the item run to terminate.
+    """
 
     def __init__(
         self,
