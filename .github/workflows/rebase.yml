@@ -1,0 +1,36 @@
+---
+name: Rebase Apache Airflow Fork
+on:  # yamllint disable-line rule:truthy
+  schedule:
+    - cron: '* * * * *'
+  workflow_dispatch:  # Allows manual triggering
+jobs:
+  rebase:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.AIRFLOW_FORK_TOKEN }}
+
+      - name: Set Up Git
+        run: |
+          git config --global user.name "Ambika Garg"
+          git config --global user.email "ambikagarg1101@gmail.com"
+
+      - name: Git Pull
+        run: |
+          git pull --unshallow
+
+      - name: Fetch Upstream
+        run: |
+          git remote add upstream https://github.com/apache/airflow.git
+          git fetch upstream
+
+      - name: Rebase Fork with Upstream
+        run: |
+          git checkout main
+          git rebase upstream/main
+          git push origin main --force-with-lease
