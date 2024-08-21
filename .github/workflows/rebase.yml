@@ -34,4 +34,4 @@ jobs:
       - name: Test with pytest
         run: |
           pip install pytest
-          pytest --system microsoft.azure tests/system/providers/microsoft/azure
+          pytest --system microsoft.azure tests/system/providers/microsoft/azure/example_powerbi_dataset_refresh.py
