@@ -54,9 +54,9 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: pytest-report
-          path: pytest-report.xml
+          path: tests/system/providers/microsoft/azure/pytest_report/pytest-report.xml
 
       - name: Download pytest report
         uses: actions/download-artifact@v3
         with:
-          name: pytest-report
+          name: tests/system/providers/microsoft/azure/pytest_report/pytest-report.xml
