@@ -32,13 +32,16 @@ jobs:
       - name: "Install Breeze"
         uses: ./.github/actions/breeze
       - name: Install requirements
-        shell: breeze
         run: |
-          pytest --system=microsoft --junitxml=report_test.xml tests/system/providers/microsoft/azure/example_msgraph.py
-          # breeze shell
+          breeze shell
           # breeze testing tests tests/system/providers/microsoft/azure/example_msgraph.py --system microsoft --junitxml=report_test.xml
           # pip install sqlalchemy
           # pip install time_machine
+      - name: Run Pytest in Breeze shell
+        shell: bash
+        run: |
+          pytest --system=microsoft --junitxml=report_test.xml tests/system/providers/microsoft/azure/example_msgraph.py
+
       # - name: Test with pytest
       #   run: |
       #     pip install pytest
