@@ -39,6 +39,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [rebase]
     steps:
+      - name: Setup Breeze
+        run: breeze shell
       - name: Test with pytest
         run: |
           pip install pytest
