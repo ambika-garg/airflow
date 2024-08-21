@@ -34,9 +34,9 @@ jobs:
       - name: Install requirements
         run: |
           breeze shell
-          pip install sqlalchemy
-          pip install time_machine
+          # pip install sqlalchemy
+          # pip install time_machine
       - name: Test with pytest
         run: |
           pip install pytest
-          pytest --system microsoft.azure tests/system/providers/microsoft/azure/example_powerbi_dataset_refresh.py
+          pytest --system=microsoft.azure --junitxml=report_test.xml tests/system/providers/microsoft/azure
