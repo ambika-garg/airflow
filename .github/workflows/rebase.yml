@@ -20,21 +20,27 @@ jobs:
           git config --global user.name "Ambika Garg"
           git config --global user.email "ambikagarg1101@gmail.com"
 
-      - name: Git Pull
-        run: |
-          git pull --unshallow
+      # - name: Git Pull
+      #   run: |
+      #     git pull --unshallow
 
-      - name: Fetch Upstream
-        run: |
-          git remote add upstream https://github.com/apache/airflow.git
-          git fetch upstream
+      # - name: Fetch Upstream
+      #   run: |
+      #     git remote add upstream https://github.com/apache/airflow.git
+      #     git fetch upstream
+
+      # - name: Rebase Fork with Upstream
+      #   run: |
+      #     git checkout main
+      #     git rebase upstream/main
+      #     git push origin main --force-with-lease
 
       - name: "Install Breeze"
         uses: ./.github/actions/breeze
       - name: Install requirements
         run: |
           # breeze shell
-          breeze testing tests tests/system/providers/microsoft/azure/mock_test.py --system microsoft --junitxml=pytest-report.xml
+          breeze testing tests tests/system/providers/microsoft/azure/example_mock_test.py --system microsoft --junitxml=pytest-report.xml
           # pip install sqlalchemy
           # pip install time_machine
       # - name: Run Pytest in Breeze shell
