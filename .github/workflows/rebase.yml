@@ -33,7 +33,7 @@ jobs:
         uses: ./.github/actions/breeze
       - name: Install requirements
         run: |
-          breeze --version
+          breeze shell
           pip install sqlalchemy
           pip install time_machine
       - name: Test with pytest
