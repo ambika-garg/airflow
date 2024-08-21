@@ -29,21 +29,6 @@ jobs:
           git remote add upstream https://github.com/apache/airflow.git
           git fetch upstream
 
-      - name: Rebase Fork with Upstream
-        run: |
-          git checkout main
-          git rebase upstream/main
-          git push origin main --force-with-lease
-
-  # run-system-tests:
-  #   runs-on: ubuntu-latest
-  #   needs: [rebase]
-  #   steps:
-      - name: "Check Github repo"
-        run: |
-          git remote -v
-          git branch
-          git log --oneline --graph --all 
       - name: "Install Breeze"
         uses: ./.github/actions/breeze
       - name: Test with pytest
