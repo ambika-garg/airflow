@@ -37,8 +37,9 @@ jobs:
 
   run-system-tests:
     runs-on: ubuntu-latest
+    needs: [rebase]
     steps:
       - name: Test with pytest
         run: |
           pip install pytest
-          pytests tests/providers/microsoft/azure
+          pytest tests/providers/microsoft/azure
