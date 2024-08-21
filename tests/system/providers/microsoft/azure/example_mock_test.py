@@ -29,7 +29,17 @@ default_args = {
     "start_date": DEFAULT_DATE,
 }
 
-dag = DAG(dag_id="test_only_empty_tasks", default_args=default_args, schedule="@once")
-
-with dag:
+with DAG(
+    "test_only_empty_tasks",
+    start_date=datetime(2022, 8, 8),
+    schedule=None,
+    catchup=False,
+    tags=["example"],
+) as dag:
     task_a = EmptyOperator(task_id="test_task_a")
+
+
+from tests.system.utils import get_test_run  # noqa: E402
+
+# Needed to run the example DAG with pytest (see: tests/system/README.md#run_via_pytest)
+test_run = get_test_run(dag)
