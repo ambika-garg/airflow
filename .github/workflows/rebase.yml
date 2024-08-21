@@ -1,5 +1,5 @@
 ---
-name: Rebase Apache Airflow Fork
+name: System dashboard workflow for Microsoft Azure
 on:  # yamllint disable-line rule:truthy
   schedule:
     - cron: '* * * * *'
@@ -34,3 +34,11 @@ jobs:
           git checkout main
           git rebase upstream/main
           git push origin main --force-with-lease
+
+  run-system-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test with pytest
+        run: |
+          pip install pytest
+          pytests tests/providers/microsoft/azure
