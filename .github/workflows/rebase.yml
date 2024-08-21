@@ -59,4 +59,4 @@ jobs:
       - name: Download pytest report
         uses: actions/download-artifact@v3
         with:
-          name: tests/system/providers/microsoft/azure/pytest_report/pytest-report.xml
+          name: pytest-report
