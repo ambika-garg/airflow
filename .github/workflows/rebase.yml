@@ -31,6 +31,9 @@ jobs:
 
       - name: "Install Breeze"
         uses: ./.github/actions/breeze
+      - name: Install requirements
+        run: |
+          pip install sqlalchemy
       - name: Test with pytest
         run: |
           pip install pytest
