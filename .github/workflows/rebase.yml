@@ -20,38 +20,33 @@ jobs:
           git config --global user.name "Ambika Garg"
           git config --global user.email "ambikagarg1101@gmail.com"
 
-      - name: Upload Artifacts to Azure Blob storage
+      - name: Git Pull
         run: |
-          mkdir -p airflow-github-artifact
-          echo "Hello, World!" > airflow-github-artifact/hello.txt
+          git pull --unshallow
 
-      - uses: fixpoint/azblob-upload-artifact@v4
+      - name: Fetch Upstream
+        run: |
+          git remote add upstream https://github.com/apache/airflow.git
+          git fetch upstream
+
+      - name: Rebase Fork with Upstream
+        run: |
+          git checkout main
+          git rebase upstream/main
+          git push origin main --force-with-lease
+
+      - name: "Install Breeze"
+        uses: ./.github/actions/breeze
+      - name: "Run System Tests for Microsoft Azure"
+        run: |
+          breeze testing tests tests/system/providers/microsoft/azure/example_mock_test.py --system microsoft --junitxml=tests/pytest-report.xml
+
+      - name: Upload Test report to Azure Blob storage
+        uses: fixpoint/azblob-upload-artifact@v4
         with:
           connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-          name: my-artifact
-          path: airflow-github-artifact
-
-
-      # - name: Git Pull
-      #   run: |
-      #     git pull --unshallow
-
-      # - name: Fetch Upstream
-      #   run: |
-      #     git remote add upstream https://github.com/apache/airflow.git
-      #     git fetch upstream
-
-      # - name: Rebase Fork with Upstream
-      #   run: |
-      #     git checkout main
-      #     git rebase upstream/main
-      #     git push origin main --force-with-lease
-
-      # - name: "Install Breeze"
-      #   uses: ./.github/actions/breeze
-      # - name: "Run Breeze tests"
-      #   run: |
-      #     breeze testing tests tests/system/providers/microsoft/azure/example_mock_test.py --system microsoft --junitxml=tests/system/providers/microsoft/azure/pytest_report/pytest-report.xml
+          name: system-test-report
+          path: tests/pytest-report.xml
 
       # - name: Upload pytest report
       #   uses: actions/upload-artifact@v3
