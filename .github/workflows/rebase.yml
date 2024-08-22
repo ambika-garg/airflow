@@ -20,6 +20,18 @@ jobs:
           git config --global user.name "Ambika Garg"
           git config --global user.email "ambikagarg1101@gmail.com"
 
+      - name: Upload Artifacts to Azure Blob storage
+        run: |
+          mkdir -p airflow-github-artifact
+          echo "Hello, World!" > airflow-github-artifact/hello.txt
+
+      - uses: fixpoint/azblob-upload-artifact@v4
+        with:
+          connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+          name: my-artifact
+          path: airflow-github-artifact
+
+
       # - name: Git Pull
       #   run: |
       #     git pull --unshallow
@@ -35,28 +47,19 @@ jobs:
       #     git rebase upstream/main
       #     git push origin main --force-with-lease
 
-      - name: "Install Breeze"
-        uses: ./.github/actions/breeze
-      - name: "Run Breeze tests"
-        run: |
-          breeze testing tests tests/system/providers/microsoft/azure/example_mock_test.py --system microsoft --junitxml=tests/system/providers/microsoft/azure/pytest_report/pytest-report.xml
-      # - name: Run Pytest in Breeze shell
-      #   shell: bash
+      # - name: "Install Breeze"
+      #   uses: ./.github/actions/breeze
+      # - name: "Run Breeze tests"
       #   run: |
-      #     pytest --system=microsoft --junitxml=report_test.xml tests/system/providers/microsoft/azure/example_msgraph.py
+      #     breeze testing tests tests/system/providers/microsoft/azure/example_mock_test.py --system microsoft --junitxml=tests/system/providers/microsoft/azure/pytest_report/pytest-report.xml
 
-      # - name: Test with pytest
-      #   run: |
-      #     pip install pytest
-      #     pytest --system=microsoft --junitxml=report_test.xml tests/system/providers/microsoft/azure
+      # - name: Upload pytest report
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: pytest-report
+      #     path: tests/system/providers/microsoft/azure/pytest_report/pytest-report.xml
 
-      - name: Upload pytest report
-        uses: actions/upload-artifact@v3
-        with:
-          name: pytest-report
-          path: tests/system/providers/microsoft/azure/pytest_report/pytest-report.xml
-
-      - name: Download pytest report
-        uses: actions/download-artifact@v3
-        with:
-          name: pytest-report
+      # - name: Download pytest report
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: pytest-report
