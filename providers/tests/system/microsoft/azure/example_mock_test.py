@@ -24,6 +24,7 @@ from airflow.operators.empty import EmptyOperator
 
 DEFAULT_DATE = datetime(2016, 1, 1)
 
+
 default_args = {
     "owner": "airflow",
     "start_date": DEFAULT_DATE,
