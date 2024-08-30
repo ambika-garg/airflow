@@ -1,10 +1,10 @@
 import os
 
-DATASET_ID = os.environ.get("DATASET_ID", "None")
-GROUP_ID = os.environ.get("GROUP_ID", "None")
-CLIENT_ID = os.environ.get("CLIENT_ID", None)
-CLIENT_SECRET = os.environ.get("CLIENT_SECRET", None)
-TENANT_ID = os.environ.get("TENANT_ID", None)
+DATASET_ID = os.getenv("DATASET_ID", "None")
+GROUP_ID = os.getenv("GROUP_ID", "None")
+CLIENT_ID = os.getenv("CLIENT_ID", None)
+CLIENT_SECRET = os.getenv("CLIENT_SECRET", None)
+TENANT_ID = os.getenv("TENANT_ID", None)
 
 
 print("DATASET_ID", DATASET_ID)
