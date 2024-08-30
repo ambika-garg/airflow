@@ -47,12 +47,12 @@ jobs:
         run: |
           breeze testing tests tests/system/providers/microsoft/azure/example_mock_test.py tests/system/providers/microsoft/azure/example_powerbi_dataset_refresh.py --system microsoft --junitxml=tests/pytest-report.xml
         
-      # - name: Upload Test report to Azure Blob storage
-      #   uses: fixpoint/azblob-upload-artifact@v4
-      #   with:
-      #     connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-      #     name: system-test-report
-      #     path: tests/pytest-report.xml
+      - name: Upload Test report to Azure Blob storage
+        uses: fixpoint/azblob-upload-artifact@v4
+        with:
+          connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+          name: system-test-report
+          path: tests/pytest-report.xml
 
       # - name: "Access Env variables"
       #   env: 
