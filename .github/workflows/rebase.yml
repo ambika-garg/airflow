@@ -54,15 +54,15 @@ jobs:
       #     name: system-test-report
       #     path: tests/pytest-report.xml
 
-      - name: "Access Env variables"
-        env: 
-          DATASET_ID: ${{ secrets.DATASET_ID }}
-          GROUP_ID: ${{ secrets.GROUP_ID }}
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          TENANT_ID: ${{ secrets.TENANT_ID }}
-        run: |
-          python tests/system/providers/microsoft/azure/delele_file.py
+      # - name: "Access Env variables"
+      #   env: 
+      #     DATASET_ID: ${{ secrets.DATASET_ID }}
+      #     GROUP_ID: ${{ secrets.GROUP_ID }}
+      #     CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      #     CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+      #     TENANT_ID: ${{ secrets.TENANT_ID }}
+      #   run: |
+      #     python tests/system/providers/microsoft/azure/delele_file.py
 
       # - name: Upload pytest report
       #   uses: actions/upload-artifact@v3
