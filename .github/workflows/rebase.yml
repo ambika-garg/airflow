@@ -39,11 +39,11 @@ jobs:
         uses: ./.github/actions/breeze
       - name: "Run System Tests for Microsoft Azure"
         env: 
-          DATASET_ID: {{secrets.DATASET_ID}}
-          GROUP_ID: {{secrets.GROUP_ID}}
-          CLIENT_ID: {{secrets.CLIENT_ID}}
-          CLIENT_SECRET: {{secrets.CLIENT_SECRET}}
-          TENANT_ID: {{secrets.TENANT_ID}}
+          DATASET_ID: ${{ secrets.DATASET_ID }}
+          GROUP_ID: ${{ secrets.GROUP_ID }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          TENANT_ID: ${{ secrets.TENANT_ID }}
         run: |
           breeze testing tests tests/system/providers/microsoft/azure/example_mock_test.py tests/system/providers/microsoft/azure/example_powerbi_dataset_refresh.py --system microsoft --junitxml=tests/pytest-report.xml
         
