@@ -20,33 +20,39 @@ jobs:
           git config --global user.name "Ambika Garg"
           git config --global user.email "ambikagarg1101@gmail.com"
 
-      # - name: Git Pull
-      #   run: |
-      #     git pull --unshallow
+      - name: Git Pull
+        run: |
+          git pull --unshallow
 
-      # - name: Fetch Upstream
-      #   run: |
-      #     git remote add upstream https://github.com/apache/airflow.git
-      #     git fetch upstream
+      - name: Fetch Upstream
+        run: |
+          git remote add upstream https://github.com/apache/airflow.git
+          git fetch upstream
 
-      # - name: Rebase Fork with Upstream
-      #   run: |
-      #     git checkout main
-      #     git rebase upstream/main
-      #     git push origin main --force-with-lease
+      - name: Rebase Fork with Upstream
+        run: |
+          git checkout main
+          git rebase upstream/main
+          git push origin main --force-with-lease
 
-      # - name: "Install Breeze"
-      #   uses: ./.github/actions/breeze
-      # - name: "Run System Tests for Microsoft Azure"
-      #   run: |
-      #     breeze testing tests tests/system/providers/microsoft/azure/example_mock_test.py --system microsoft --junitxml=tests/pytest-report.xml
+      - name: "Install Breeze"
+        uses: ./.github/actions/breeze
+      - name: "Run System Tests for Microsoft Azure"
+        env: 
+          DATASET_ID: {{secrets.DATASET_ID}}
+          GROUP_ID: {{secrets.GROUP_ID}}
+          CLIENT_ID: {{secrets.CLIENT_ID}}
+          CLIENT_SECRET: {{secrets.CLIENT_SECRET}}
+          TENANT_ID: {{secrets.TENANT_ID}}
+        run: |
+          breeze testing tests tests/system/providers/microsoft/azure/example_mock_test.py tests/system/providers/microsoft/azure/example_powerbi_dataset_refresh.py --system microsoft --junitxml=tests/pytest-report.xml
         
-      # - name: Upload Test report to Azure Blob storage
-      #   uses: fixpoint/azblob-upload-artifact@v4
-      #   with:
-      #     connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-      #     name: system-test-report
-      #     path: tests/pytest-report.xml
+      - name: Upload Test report to Azure Blob storage
+        uses: fixpoint/azblob-upload-artifact@v4
+        with:
+          connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+          name: system-test-report
+          path: tests/pytest-report.xml
 
       # - name: Upload pytest report
       #   uses: actions/upload-artifact@v3
@@ -59,8 +65,3 @@ jobs:
       #   with:
       #     name: pytest-report
 
-      - name: "Test env variables"
-        env: 
-          DATATSET_ID: 'abc'
-        run: |
-          python -c "import os; print(os.environ['DATATSET_ID'])"
