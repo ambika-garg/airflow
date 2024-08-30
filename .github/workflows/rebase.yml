@@ -2,7 +2,7 @@
 name: System dashboard workflow for Microsoft Azure
 on:  # yamllint disable-line rule:truthy
   schedule:
-    - cron: '* * * * *'
+    - cron: '0 */6 * * *'
   workflow_dispatch:  # Allows manual triggering
 jobs:
   rebase:
