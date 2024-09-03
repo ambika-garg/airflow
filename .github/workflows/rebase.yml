@@ -38,7 +38,7 @@ jobs:
       - name: Rebase Fork with Upstream
         run: |
           git checkout fabric
-          git rebase upstream/fabric
+          git rebase upstream/main
           git push origin fabric --force-with-lease
 
       # - name: "Install Breeze"
