@@ -42,14 +42,15 @@ stages:
     - script: |
         git remote add upstream https://github.com/apache/airflow.git
         git fetch upstream 
-  - job: CheckoutFabricdevBranch
-    dependsOn: [FetchUpstream]
-    steps:
-    - script: |
         git checkout dev-fabric
         git remote -v
         git rebase upstream/main
         git push origin dev-fabric --force-with-lease
+
+          # - job: CheckoutFabricdevBranch
+  #   dependsOn: [FetchUpstream]
+  #   steps:
+  #   - script: |
   # - job: RebaseBranchWithUpstream
   #   dependsOn: [CheckoutFabricdevBranch]
   #   steps:
