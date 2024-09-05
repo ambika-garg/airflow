@@ -1,3 +1,4 @@
+ 
  .. Licensed to the Apache Software Foundation (ASF) under one
     or more contributor license agreements.  See the NOTICE file
     distributed with this work for additional information
@@ -16,7 +17,7 @@
     under the License.
 
 ``apache-airflow-providers-microsoft-fabric``
-============================================
+==============================================
 
 
 .. toctree::
@@ -24,7 +25,7 @@
    :maxdepth: 1
    :caption: Guides
 
-   Connection types <connections/fabric>
+   Connection types <connections>
    Operators <operators>
 
 .. toctree::
