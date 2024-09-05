@@ -52,7 +52,7 @@ stages:
     steps:
     - script: |
         git rebase upstream/main
-        git push origin fabric-dev --force-with-lease
+        git push origin dev-fabric --force-with-lease
 
 # - stage: B
 #   jobs:
