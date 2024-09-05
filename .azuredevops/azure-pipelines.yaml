@@ -31,5 +31,5 @@ steps:
       echo "Repository Details:"
       echo "Repository Name: $(Build.Repository.Name)"
       echo "Repository URL: $(Build.Repository.Uri)"
-      git branch
+      git branch -a
     displayName: 'Print Repository Details'
