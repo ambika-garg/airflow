@@ -1,0 +1,18 @@
+---
+# azure-pipelines.yml
+trigger:
+  - none  # Disable automatic triggers, so this pipeline only runs manually
+
+pr:
+  - none  # Disable PR triggers
+
+pool:
+  vmImage: 'ubuntu-latest'  # Use the latest Ubuntu image for the build agent
+
+steps:
+  - script: |
+      echo "Repository Details:"
+      echo "Repository Name: $(Build.Repository.Name)"
+      echo "Repository URL: $(Build.Repository.Uri)"
+      git branch
+    displayName: 'Print Repository Details'
