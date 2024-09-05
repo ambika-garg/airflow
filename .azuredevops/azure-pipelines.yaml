@@ -26,10 +26,37 @@ pr:
 pool:
   vmImage: 'ubuntu-latest'  # Use the latest Ubuntu image for the build agent
 
-steps:
-  - script: |
-      echo "Repository Details:"
-      echo "Repository Name: $(Build.Repository.Name)"
-      echo "Repository URL: $(Build.Repository.Uri)"
-      git branch -a
-    displayName: 'Print Repository Details'
+stages:
+- stage: Rebase_Airflow_Fork
+  jobs:
+  - job: GitPull
+    steps:
+    - script: |
+        git pull --unshallow
+  - job: FetchUpstream
+    steps:
+    - script: |
+        git remote add upstream https://github.com/apache/airflow.git
+        git fetch upstream 
+  - job: CheckoutFabricdevBranch
+    steps:
+    - script: |
+        git checkout dev-fabric
+  - job: RebaseBranchWithUpstream
+    steps:
+    - script: |
+        git rebase upstream/main
+        git push origin fabric-dev --force-with-lease
+
+# - stage: B
+#   jobs:
+#   - job: B1
+#   - job: B2
+
+# steps:
+#   - script: |
+#       echo "Repository Details:"
+#       echo "Repository Name: $(Build.Repository.Name)"
+#       echo "Repository URL: $(B"uild.Repository.Uri)"
+#       git branch -a"
+#     displayName: 'Print Repository Details'
