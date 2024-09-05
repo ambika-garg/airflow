@@ -34,15 +34,18 @@ stages:
     - script: |
         git pull --unshallow
   - job: FetchUpstream
+    dependsOn: [GitPull]
     steps:
     - script: |
         git remote add upstream https://github.com/apache/airflow.git
         git fetch upstream 
   - job: CheckoutFabricdevBranch
+    dependsOn: [FetchUpstream]
     steps:
     - script: |
         git checkout dev-fabric
   - job: RebaseBranchWithUpstream
+    dependsOn: [CheckoutFabricdevBranch]
     steps:
     - script: |
         git rebase upstream/main
