@@ -32,7 +32,10 @@ stages:
   - job: GitPull
     steps:
     - script: |
-        git pull
+        git config --global user.name "Ambika Garg"
+        git config --global user.email "ambikagarg1101@gmail.com"
+        git checkout main
+
   - job: FetchUpstream
     dependsOn: [GitPull]
     steps:
