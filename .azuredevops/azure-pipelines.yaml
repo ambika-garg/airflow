@@ -32,7 +32,7 @@ stages:
         git rebase upstream/main
 
         echo "Pushing changes to origin..."
-        git push origin dev-fabric --force-with-lease
+        git push https://$(GITHUB_PAT)@github.com/ambika-garg/airflow.git dev-fabric --force-with-lease
       displayName: 'Rebase Fork with Upstream'
       env:
         GIT_ASKPASS: echo
