@@ -36,4 +36,4 @@ stages:
       displayName: 'Rebase Fork with Upstream'
       env:
         GIT_ASKPASS: echo
-        GIT_PASSWORD: $(GITHUB_TOKEN)  # Ensure this is set up correctly in Azure DevOps
+        GIT_PASSWORD: $(GITHUB_PAT)  # Ensure this is set up correctly in Azure DevOps
