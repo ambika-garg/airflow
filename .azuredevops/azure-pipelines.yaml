@@ -19,6 +19,8 @@ stages:
         git config --global user.name "Ambika Garg"
         git config --global user.email "ambikagarg1101@gmail.com"
 
+        git pull
+
         echo "Adding upstream remote..."
         git remote add upstream https://github.com/apache/airflow.git
 
