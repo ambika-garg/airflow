@@ -47,12 +47,15 @@ stages:
     steps:
     - script: |
         git checkout dev-fabric
-  - job: RebaseBranchWithUpstream
-    dependsOn: [CheckoutFabricdevBranch]
-    steps:
-    - script: |
+        git remote -v
         git rebase upstream/main
         git push origin dev-fabric --force-with-lease
+  # - job: RebaseBranchWithUpstream
+  #   dependsOn: [CheckoutFabricdevBranch]
+  #   steps:
+  #   - script: |
+  #       git rebase upstream/main
+  #       git push origin dev-fabric --force-with-lease
 
 # - stage: B
 #   jobs:
