@@ -34,12 +34,6 @@ stages:
     - script: |
         git config --global user.name "Ambika Garg"
         git config --global user.email "ambikagarg1101@gmail.com"
-        git checkout main
-
-  - job: FetchUpstream
-    dependsOn: [GitPull]
-    steps:
-    - script: |
         git remote add upstream https://github.com/apache/airflow.git
         git fetch upstream 
         git checkout dev-fabric
