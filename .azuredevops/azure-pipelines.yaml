@@ -32,7 +32,7 @@ stages:
   - job: GitPull
     steps:
     - script: |
-        git pull --unshallow
+        git pull
   - job: FetchUpstream
     dependsOn: [GitPull]
     steps:
