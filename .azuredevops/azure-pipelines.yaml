@@ -2,11 +2,11 @@
 trigger:
   - none  # Disable automatic triggers, so this pipeline only runs manually
 
-pr:
-  - none  # Disable PR triggers
-
 pool:
   vmImage: 'ubuntu-latest'  # Use the latest Ubuntu image for the build agent
+
+variables:
+  pythonVersion: '3.9'
 
 stages:
 - stage: Rebase_Airflow_Fork
@@ -47,6 +47,14 @@ stages:
   - job: Setup_Breeze_Environment
     dependsOn: [Rebase_Airflow_Fork_on_Latest_main]
     steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: $(pythonVersion)
+        addToPath: true
+      
     - script: |
-        git branch
-        git status
+        git checkout main
+        ./scripts/ci/install_breeze.sh
+      displayName: 'Install Breeze'
+      env:
+        PYTHON_VERSION: $(pythonVersion)
