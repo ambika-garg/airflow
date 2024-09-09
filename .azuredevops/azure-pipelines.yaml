@@ -19,8 +19,6 @@ stages:
         git config --global user.name "Ambika Garg"
         git config --global user.email "ambikagarg1101@gmail.com"
 
-        git pull
-
         echo "Adding upstream remote..."
         git remote add upstream https://github.com/apache/airflow.git
 
@@ -30,11 +28,14 @@ stages:
         echo "Checking out branch..."
         git checkout dev-fabric
 
+        echo "Pull changes from Remote dev-fabric"
+        git pull
+
         echo "Rebasing with upstream..."
         git rebase upstream/main
 
         echo "Pushing changes to origin..."
-        git push https://$(GITHUB_PAT)@github.com/ambika-garg/airflow.git dev-fabric --force
+        git push https://$(GITHUB_PAT)@github.com/ambika-garg/airflow.git dev-fabric --force-with-lease
       displayName: 'Rebase Fork with Upstream'
       env:
         GIT_ASKPASS: echo
