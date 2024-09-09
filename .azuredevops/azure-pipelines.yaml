@@ -61,3 +61,10 @@ stages:
       displayName: 'Install Breeze'
       env:
         PYTHON_VERSION: $(pythonVersion)
+
+    - script: |
+        breeze testing tests tests/system/providers/microsoft/fabric/example_fabric_item_run.py --system microsoft --junitxml=tests/pytest-report.xml
+      displayName: 'Run System tests'
+      env:
+        PYTHON_VERSION: $(pythonVersion)
+      
