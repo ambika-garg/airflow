@@ -29,7 +29,7 @@ stages:
         git checkout dev-fabric
 
         echo "Pull changes from Remote dev-fabric"
-        git pull
+        git pull origin/dev-fabric
 
         echo "Rebasing with upstream..."
         git rebase upstream/main
