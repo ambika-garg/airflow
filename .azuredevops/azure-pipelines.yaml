@@ -34,6 +34,9 @@ stages:
         echo "Rebasing with upstream..."
         git rebase upstream/main
 
+        echo "Git status..."
+        git status
+
         echo "Pushing changes to origin..."
         git push https://$(GITHUB_PAT)@github.com/ambika-garg/airflow.git dev-fabric --force-with-lease
       displayName: 'Rebase Fork with Upstream'
