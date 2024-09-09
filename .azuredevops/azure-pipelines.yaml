@@ -53,8 +53,11 @@ stages:
         addToPath: true
       
     - script: |
-        git checkout main
-        ./scripts/ci/install_breeze.sh
+        # git checkout main
+        # ./scripts/ci/install_breeze.sh
+        python -m pip install --upgrade pip==24.0
+        python -m pip install "pipx>=1.4.1"
+        python -m pipx install apache-airflow-breeze
       displayName: 'Install Breeze'
       env:
         PYTHON_VERSION: $(pythonVersion)
