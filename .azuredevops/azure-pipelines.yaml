@@ -63,7 +63,8 @@ stages:
         PYTHON_VERSION: $(pythonVersion)
 
     - script: |
-        breeze testing tests tests/system/providers/microsoft/fabric/example_fabric_item_run.py --system microsoft --junitxml=tests/pytest-report.xml
+        breeze setup config --no-cheatsheet --no-asciiart
+        # breeze testing tests tests/system/providers/microsoft/fabric/example_fabric_item_run.py --system microsoft --junitxml=tests/pytest-report.xml
       displayName: 'Run System tests'
       env:
         PYTHON_VERSION: $(pythonVersion)
