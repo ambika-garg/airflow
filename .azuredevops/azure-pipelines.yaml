@@ -11,7 +11,7 @@ pool:
 stages:
 - stage: Rebase_Airflow_Fork
   jobs:
-  - job: GitPull
+  - job: Rebase_Airflow_Fork_on_Latest_main
     steps:
     - checkout: self  # Check out the repository so we can rebase it
     - script: |
@@ -43,3 +43,10 @@ stages:
       env:
         GIT_ASKPASS: echo
         GIT_PASSWORD: $(GITHUB_PAT)  # Ensure this is set up correctly in Azure DevOps
+
+  - job: Setup_Breeze_Environment
+    dependsOn: [Rebase_Airflow_Fork_on_Latest_main]
+    steps:
+    - script: |
+        git branch
+        git status
