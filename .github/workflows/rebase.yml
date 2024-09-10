@@ -21,18 +21,19 @@ jobs:
           git config --global user.name "Ambika Garg"
           git config --global user.email "ambikagarg1101@gmail.com"
 
-      - name: Git Pull
-        run: |
-          git pull --unshallow
+      # - name: Git Pull
+      #   run: |
+      #     git pull --unshallow
 
       - name: Fetch Upstream
         run: |
           git remote add upstream https://github.com/apache/airflow.git
           git fetch upstream
 
-      - name: Rebase Fork with Upstream
+      - name: Rebase Dev-Fork with Upstream
         run: |
           git checkout dev-fabric
+          git pull
           git rebase upstream/main
           git push origin dev-fabric --force-with-lease
 
