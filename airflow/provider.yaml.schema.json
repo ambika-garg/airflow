@@ -95,7 +95,8 @@
                                 "protocol",
                                 "service",
                                 "software",
-                                "yandex"
+                                "yandex",
+                                "fabric"
                             ]
                         },
                         "minItems": 1,
