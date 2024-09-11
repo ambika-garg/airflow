@@ -98,7 +98,7 @@ with DAG(
         task_id="run_notebook_async",
         workspace_id="de1004ac-eef9-4851-adac-92c09719dd8e",
         item_id="ffdd7321-0938-4ad5-bfc0-f38a1000380f",
-        fabric_conn_id="fabric_conn",
+        fabric_conn_id=CONNECTION_ID,
         job_type="RunNotebook",
         wait_for_termination=True,
         deferrable=True,
