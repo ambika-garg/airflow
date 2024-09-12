@@ -54,12 +54,12 @@ jobs:
             breeze testing tests \
             tests/system/providers/microsoft/fabric/example_fabric_item_run.py \
             --system microsoft \
-            --junitxml=tests/pytest-report.xml
+            --junitxml=pytest-report.xml
 
       - name: Upload Test report to Azure Blob storage
         uses: fixpoint/azblob-upload-artifact@v4
         if: success() || failure()
         with:
           connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-          name: airflow-system-dashboard-input
-          path: pytest-report.xml
+          name: pytest-report.xml
+          path: airflow-system-dashboard-input
