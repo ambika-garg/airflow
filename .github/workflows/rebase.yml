@@ -62,4 +62,6 @@ jobs:
         with:
           connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
           name: pytest-report.xml
+          container: airflow-system-dashboard-input
           path: airflow-system-dashboard-input
+
