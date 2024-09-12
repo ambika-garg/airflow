@@ -35,6 +35,10 @@ jobs:
       #     git rebase upstream/main
       #     git push origin dev-fabric --force-with-lease
 
+      - name: Temporary checkout Dev-Fork
+        run: |
+          git checkout dev-fabric
+
       - name: Install Breeze
         uses: ./.github/actions/breeze
       - name: Run System Tests for Microsoft Fabric
