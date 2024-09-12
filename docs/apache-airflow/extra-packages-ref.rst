@@ -184,6 +184,8 @@ These are extras that add dependencies needed for integration with external serv
 +---------------------+-----------------------------------------------------+-----------------------------------------------------+
 | microsoft-azure     | ``pip install 'apache-airflow[microsoft-azure]'``   | Microsoft Azure                                     |
 +---------------------+-----------------------------------------------------+-----------------------------------------------------+
+| microsoft-fabric    | pip install apache-airflow[microsoft-fabric]        | Microsoft Fabric                                    |
++---------------------+-----------------------------------------------------+-----------------------------------------------------+
 | cloudant            | ``pip install 'apache-airflow[cloudant]'``          | Cloudant hook                                       |
 +---------------------+-----------------------------------------------------+-----------------------------------------------------+
 | cohere              | ``pip install 'apache-airflow[cohere]'``            | Cohere hook and operators                           |
