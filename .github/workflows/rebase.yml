@@ -1,8 +1,7 @@
 ---
-name: System dashboard workflow for Microsoft Azure
+name: System dashboard workflow for Microsoft Fabric
 on:  # yamllint disable-line rule:truthy
-  schedule:
-    - cron: '0 */6 * * *'
+  schedule: []  # Disable the default schedule
   workflow_dispatch:  # Allows manual triggering
 jobs:
   rebase:
@@ -14,6 +13,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.AIRFLOW_FORK_TOKEN }}
+          persist-credentials: false
 
       - name: Set Up Git
         run: |
@@ -37,41 +37,24 @@ jobs:
 
       - name: Install Breeze
         uses: ./.github/actions/breeze
-      - name: Run System Tests for Microsoft Azure
+      - name: Run System Tests for Microsoft Fabric
+        id: system-tests-for-microsoft-fabric
         env:
-          DATASET_ID: ${{ secrets.DATASET_ID }}
-          GROUP_ID: ${{ secrets.GROUP_ID }}
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          TENANT_ID: ${{ secrets.TENANT_ID }}
+          DATASET_ID: "${{ secrets.DATASET_ID }}"
+          GROUP_ID: "${{ secrets.GROUP_ID }}"
+          CLIENT_ID: "${{ secrets.CLIENT_ID }}"
+          CLIENT_SECRET: "${{ secrets.CLIENT_SECRET }}"
+          TENANT_ID: "${{ secrets.TENANT_ID }}"
         run: |
-          breeze testing tests tests/system/providers/microsoft/fabric/example_fabric_item_run.py --system microsoft --junitxml=tests/pytest-report.xml
+            breeze testing tests \
+            tests/system/providers/microsoft/fabric/example_fabric_item_run.py \
+            --system microsoft \
+            --junitxml=tests/pytest-report.xml
 
       - name: Upload Test report to Azure Blob storage
         uses: fixpoint/azblob-upload-artifact@v4
-        if: always()
+        if: success() || failure()
         with:
           connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-          name: system-test-report
-          path: tests/pytest-report.xml
-
-      # - name: "Access Env variables"
-      #   env:
-      #     DATASET_ID: ${{ secrets.DATASET_ID }}
-      #     GROUP_ID: ${{ secrets.GROUP_ID }}
-      #     CLIENT_ID: ${{ secrets.CLIENT_ID }}
-      #     CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-      #     TENANT_ID: ${{ secrets.TENANT_ID }}
-      #   run: |
-      #     python tests/system/providers/microsoft/azure/delele_file.py
-
-      # - name: Upload pytest report
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: pytest-report
-      #     path: tests/system/providers/microsoft/azure/pytest_report/pytest-report.xml
-
-      # - name: Download pytest report
-      #   uses: actions/download-artifact@v3
-      #   with:
-      #     name: pytest-report
+          name: airflow-system-dashboard-input
+          path: pytest-report.xml
