@@ -20,20 +20,20 @@ jobs:
           git config --global user.name "Ambika Garg"
           git config --global user.email "ambikagarg1101@gmail.com"
 
-      - name: Git Pull
-        run: |
-          git pull
+      # - name: Git Pull
+      #   run: |
+      #     git pull
 
-      - name: Fetch Upstream
-        run: |
-          git remote add upstream https://github.com/apache/airflow.git
-          git fetch upstream
+      # - name: Fetch Upstream
+      #   run: |
+      #     git remote add upstream https://github.com/apache/airflow.git
+      #     git fetch upstream
 
-      - name: Rebase Dev-Fork with Upstream
-        run: |
-          git checkout dev-fabric
-          git rebase upstream/main
-          git push origin dev-fabric --force-with-lease
+      # - name: Rebase Dev-Fork with Upstream
+      #   run: |
+      #     git checkout dev-fabric
+      #     git rebase upstream/main
+      #     git push origin dev-fabric --force-with-lease
 
       - name: Install Breeze
         uses: ./.github/actions/breeze
