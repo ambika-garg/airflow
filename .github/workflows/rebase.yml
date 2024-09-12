@@ -54,7 +54,7 @@ jobs:
             breeze testing tests \
             tests/system/providers/microsoft/fabric/example_fabric_item_run.py \
             --system microsoft \
-            --junitxml=pytest-report.xml
+            --junitxml=tests/pytest-report.xml
 
       - name: Upload Pytest Report to Github artifact storage
         uses: actions/upload-artifact@v3
