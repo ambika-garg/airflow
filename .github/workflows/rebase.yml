@@ -56,6 +56,13 @@ jobs:
             --system microsoft \
             --junitxml=pytest-report.xml
 
+      - name: Upload Pytest Report to Github artifact storage
+        uses: actions/upload-artifact@v3
+        if: success() || failure()
+        with:
+          name: pytest-report
+          path: tests/pytest-report.xml
+
       - name: Upload Test report to Azure Blob storage
         uses: fixpoint/azblob-upload-artifact@v4
         if: success() || failure()
