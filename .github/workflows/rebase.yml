@@ -37,6 +37,7 @@ jobs:
 
       - name: Temporary checkout Dev-Fork
         run: |
+          git pull
           git checkout dev-fabric
 
       - name: Install Breeze
