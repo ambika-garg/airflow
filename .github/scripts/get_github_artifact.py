@@ -1,7 +1,6 @@
 import requests
 import os
 
-from airflow.providers import github
 
 def list_artifacts(repo_name, github_token, github_runid):
     """
