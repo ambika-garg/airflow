@@ -18,6 +18,7 @@ def list_artifacts(repo_name, github_token, github_runid):
         "Accept": "application/vnd.github+json"
     }
     response = requests.get(url, headers=headers)
+    print(response)
 
     if response.status_code == 200:
         artifacts = response.json()
