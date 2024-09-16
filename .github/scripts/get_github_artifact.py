@@ -57,7 +57,8 @@ import os
 
 def process_file(file_path):
     # Example function to process the artifact file
-    os.listdir(file_path)
+    directories = os.listdir(file_path)
+    print(directories)
     with open(file_path, 'r') as file:
         content = file.read()
         print("Content of the file:", content)
