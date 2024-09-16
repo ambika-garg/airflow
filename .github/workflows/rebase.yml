@@ -75,10 +75,11 @@ jobs:
 
       - name: Generate XML file
         run: |
-          echo "version: '1.0'" > tests\pytest-report.xml
-          echo "build_number: 42" >> tests\pytest-report.xml
-          echo "artifact_path: /path/to/artifact" >> tests\pytest-report.xml
-          cat tests\pytest-report.xml  # Display the generated file content
+          mkdir -p tests
+          echo "version: '1.0'" > tests/pytest-report.xml
+          echo "build_number: 42" >> tests/pytest-report.xml
+          echo "artifact_path: /path/to/artifact" >> tests/pytest-report.xml
+          cat tests/pytest-report.xml  # Display the generated file content
 
   process:
     runs-on: ubuntu-latest
@@ -91,7 +92,8 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: tests\pytest-report.xml
+          name: report
+          path: tests/pytest-report.xml 
       
       - name: Set up Python
         uses: actions/setup-python@v4
