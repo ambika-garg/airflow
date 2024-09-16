@@ -96,10 +96,11 @@ jobs:
       REPO_NAME: ${{ github.repository }}
     needs: rebase
     steps:
-      - name: Set Up Git
-        run: |
-          git config --global user.name "Ambika Garg"
-          git config --global user.email "ambikagarg1101@gmail.com"
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.AIRFLOW_FORK_TOKEN }}
+          persist-credentials: false
         
       - name: Download artifact
         uses: actions/download-artifact@v3
