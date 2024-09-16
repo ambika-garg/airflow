@@ -15,6 +15,7 @@ jobs:
           token: ${{ secrets.AIRFLOW_FORK_TOKEN }}
           persist-credentials: false
 
+      # Later on set it as common step 
       - name: Set Up Git
         run: |
           git config --global user.name "Ambika Garg"
@@ -95,6 +96,11 @@ jobs:
       REPO_NAME: ${{ github.repository }}
     needs: rebase
     steps:
+      - name: Set Up Git
+        run: |
+          git config --global user.name "Ambika Garg"
+          git config --global user.email "ambikagarg1101@gmail.com"
+        
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
