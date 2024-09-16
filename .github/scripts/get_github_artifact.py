@@ -56,21 +56,27 @@ import os
 import os
 
 def process_file(file_path):
-    # Example function to process the artifact file
-    directories = os.listdir(file_path)
-    print(directories)
-    with open(file_path, 'r') as file:
-        content = file.read()
-        print("Content of the file:", content)
-    # root = ET.fromstring(xml_content)
+    # Check if the given path is a directory
+    if os.path.isdir(file_path):
+        print(f"{file_path} is a directory. Listing contents:")
+        directories = os.listdir(file_path)
+        for item in directories:
+            print(item)
+    elif os.path.isfile(file_path):
+        # Process the file if it's a file
+        with open(file_path, 'r') as file:
+            content = file.read()
+            print("Content of the file:", content)
 
-    # Add your processing logic here
-    # For example, appending data to the file:
-    with open(file_path, 'a') as file:
-        file.write("\nProcessed by Python script")
+        # Add your processing logic here
+        # For example, appending data to the file:
+        with open(file_path, 'a') as file:
+            file.write("\nProcessed by Python script")
+    else:
+        print(f"Path {file_path} is neither a file nor a directory.")
 
 if __name__ == "__main__":
-    artifact_path = 'sample-artifact.xml'  # Path where the artifact was downloaded
+    artifact_path = 'test-report/sample-artifact.xml'  # Path where the artifact was downloaded
     if os.path.exists(artifact_path):
         process_file(artifact_path)
     else:
