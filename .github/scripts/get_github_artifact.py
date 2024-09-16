@@ -86,7 +86,7 @@ def process_file(file_path):
     #     print(f"Path {file_path} is neither a file nor a directory.")
 
 if __name__ == "__main__":
-    artifact_path = 'test-report/sample-artifact.xml/sample-artifact.xml'  # Path where the artifact was downloaded
+    artifact_path = 'test-report/sample-artifact.xml'  # Path where the artifact was downloaded
     if os.path.exists(artifact_path):
         process_file(artifact_path)
     else:

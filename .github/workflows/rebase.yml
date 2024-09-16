@@ -86,7 +86,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: test-reports
-          path: test-report/sample-artifact.xml
+          path: test-report/
 
   process:
     runs-on: ubuntu-latest
