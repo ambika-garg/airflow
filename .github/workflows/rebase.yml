@@ -80,6 +80,12 @@ jobs:
           echo "build_number: 42" >> tests/pytest-report.xml
           echo "artifact_path: /path/to/artifact" >> tests/pytest-report.xml
           cat tests/pytest-report.xml  # Display the generated file content
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: tests/
 
   process:
     runs-on: ubuntu-latest
