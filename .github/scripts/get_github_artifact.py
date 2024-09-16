@@ -100,7 +100,7 @@ def upload_blob(file_path):
 
 if __name__ == "__main__":
     artifact_path = 'test-report/sample-artifact.xml'  # Path where the artifact was downloaded
-    connection_string = os.getenv("AZURE_BLOB_STORAGE_CONNECTION_STRING")
+    connection_string = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
     print(connection_string)
     container_name = "airflow-system-dashboard-output"
     
