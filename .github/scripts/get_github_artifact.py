@@ -12,8 +12,8 @@ def list_artifacts(repo_owner, repo_name, github_token):
     """
     url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/actions/artifacts"
     headers = {
-        "Authorization": f"token {github_token}",
-        "Accept": "application/vnd.github.v3+json"
+        "Authorization": f"Bearer {github_token}",
+        "Accept": "application/vnd.github+json"
     }
     response = requests.get(url, headers=headers)
 
