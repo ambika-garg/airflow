@@ -86,7 +86,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: test-reports
-          path: test-report/
+          path: test-report
 
   process:
     runs-on: ubuntu-latest
@@ -107,7 +107,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: test-reports
-          path: test-report/sample-artifact.xml
+          path: test-report
       
       - name: Set up Python
         uses: actions/setup-python@v4
