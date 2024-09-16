@@ -101,10 +101,11 @@ def upload_blob(file_path):
 if __name__ == "__main__":
     artifact_path = 'test-report/sample-artifact.xml'  # Path where the artifact was downloaded
     connection_string = os.getenv("AZURE_BLOB_STORAGE_CONNECTION_STRING")
+    print(connection_string)
     container_name = "airflow-system-dashboard-output"
     
     if os.path.exists(artifact_path):
         process_file(artifact_path)
-        upload_blob(connection_string=connection_string, container_name = container_name, blob_name="Blob_from_rebase_workflow.xml", file_path=artifact_path)
+        upload_blob(connection_string, container_name, "Blob_from_rebase_workflow.xml", artifact_path)
     else:
         print(f"Artifact not found at {artifact_path}")
