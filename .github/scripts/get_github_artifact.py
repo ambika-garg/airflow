@@ -37,13 +37,13 @@ import zipfile
 import os
 
 # Define the path to the downloaded artifact
-artifact_path = 'test-report.zip'
+artifact_path = 'test-reports.zip'
 
 # Unzip the artifact
 with zipfile.ZipFile(artifact_path, 'r') as zip_ref:
-    zip_ref.extractall('data-artifact')
+    zip_ref.extractall('test-reports')
 
 # Read and print the content of a file from the artifact
-with open('test-report/sample-artifact.xml', 'r') as file:
+with open('test-reports/sample-artifact.xml', 'r') as file:
     content = file.read()
     print("Content of sample.txt:", content)
