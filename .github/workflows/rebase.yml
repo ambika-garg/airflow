@@ -20,6 +20,7 @@ jobs:
           git config --global user.name "Ambika Garg"
           git config --global user.email "ambikagarg1101@gmail.com"
 
+      # TODO: DONOT DELETE IT OR UNCOMMENT IT IN DEVELOPMENT
       # - name: Git Pull
       #   run: |
       #     git pull
@@ -35,39 +36,43 @@ jobs:
       #     git rebase upstream/main
       #     git push origin dev-fabric --force-with-lease
 
-      - name: Temporary checkout Dev-Fork
+      # - name: Temporary checkout Dev-Fork
+      #   run: |
+      #     git pull
+      #     git checkout dev-fabric
+
+      # - name: Install Breeze
+      #   uses: ./.github/actions/breeze
+      # - name: Run System Tests for Microsoft Fabric
+      #   id: system-tests-for-microsoft-fabric
+      #   env:
+      #     DATASET_ID: "${{ secrets.DATASET_ID }}"
+      #     GROUP_ID: "${{ secrets.GROUP_ID }}"
+      #     CLIENT_ID: "${{ secrets.CLIENT_ID }}"
+      #     CLIENT_SECRET: "${{ secrets.CLIENT_SECRET }}"
+      #     TENANT_ID: "${{ secrets.TENANT_ID }}"
+      #   run: |
+      #       breeze testing tests \
+      #       tests/system/providers/microsoft/fabric/example_fabric_item_run.py \
+      #       --system microsoft \
+      #       --junitxml=tests/pytest-report.xml
+
+      # - name: Upload Pytest Report to Github artifact storage
+      #   uses: actions/upload-artifact@v3
+      #   if: success() || failure()
+      #   with:
+      #     name: pytest-report
+      #     path: tests/pytest-report.xml
+
+      # - name: Upload Test report to Azure Blob storage
+      #   uses: fixpoint/azblob-upload-artifact@v4
+      #   if: success() || failure()
+      #   with:
+      #     connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+      #     name: pytest-report.xml
+      #     container: airflow-system-dashboard-input
+      #     path: test_runs
+
+      - name: Fetch and Preprocess the Data from Blob Storage
         run: |
-          git pull
-          git checkout dev-fabric
-
-      - name: Install Breeze
-        uses: ./.github/actions/breeze
-      - name: Run System Tests for Microsoft Fabric
-        id: system-tests-for-microsoft-fabric
-        env:
-          DATASET_ID: "${{ secrets.DATASET_ID }}"
-          GROUP_ID: "${{ secrets.GROUP_ID }}"
-          CLIENT_ID: "${{ secrets.CLIENT_ID }}"
-          CLIENT_SECRET: "${{ secrets.CLIENT_SECRET }}"
-          TENANT_ID: "${{ secrets.TENANT_ID }}"
-        run: |
-            breeze testing tests \
-            tests/system/providers/microsoft/fabric/example_fabric_item_run.py \
-            --system microsoft \
-            --junitxml=tests/pytest-report.xml
-
-      - name: Upload Pytest Report to Github artifact storage
-        uses: actions/upload-artifact@v3
-        if: success() || failure()
-        with:
-          name: pytest-report
-          path: tests/pytest-report.xml
-
-      - name: Upload Test report to Azure Blob storage
-        uses: fixpoint/azblob-upload-artifact@v4
-        if: success() || failure()
-        with:
-          connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-          name: pytest-report.xml
-          container: airflow-system-dashboard-input
-          path: test_runs
+          python scripts/fetch_and_preprocess_data.py
