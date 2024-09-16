@@ -80,4 +80,4 @@ jobs:
 
       - name: Fetch and Preprocess the Data from Blob Storage
         run: |
-          python scripts/fetch_and_preprocess_data.py
+          python .github/scripts/fetch_and_proprocess_data.py
