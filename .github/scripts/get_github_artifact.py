@@ -19,8 +19,10 @@ def list_artifacts(repo_name, github_token, github_runid):
     response = requests.get(url, headers=headers)
 
     if response.status_code == 200:
-        artifacts = response.json().get('artifacts', [])
-        return [(artifact['id'], artifact['name']) for artifact in artifacts]
+        artifacts = response.json()
+        print(artifacts)
+        # .get('artifacts', [])
+        # return [(artifact['id'], artifact['name']) for artifact in artifacts]
     else:
         raise Exception(f"Failed to list artifacts: {response.status_code} {response.text}")
 
