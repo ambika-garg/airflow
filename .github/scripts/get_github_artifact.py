@@ -57,6 +57,7 @@ import os
 
 def process_file(file_path):
     # Example function to process the artifact file
+    os.listdir(file_path)
     with open(file_path, 'r') as file:
         content = file.read()
         print("Content of the file:", content)
@@ -68,7 +69,7 @@ def process_file(file_path):
         file.write("\nProcessed by Python script")
 
 if __name__ == "__main__":
-    artifact_path = 'test-reports'  # Path where the artifact was downloaded
+    artifact_path = 'test-report/sample-artifact.xml'  # Path where the artifact was downloaded
     if os.path.exists(artifact_path):
         process_file(artifact_path)
     else:
