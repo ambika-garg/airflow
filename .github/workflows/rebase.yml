@@ -92,6 +92,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
       REPO_OWNER: ${{ github.repository_owner }}
       REPO_NAME: ${{ github.repository }}
       GITHUB_RUN_ID: ${{ github.run_id }}
