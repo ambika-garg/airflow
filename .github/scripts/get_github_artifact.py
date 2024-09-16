@@ -56,22 +56,22 @@ import os
 import os
 
 def process_file(file_path):
-     if os.path.isfile(file_path):
+    if os.path.isfile(file_path):
         with open(file_path, 'r') as file:
             content = file.read()
             print("Content of the file:", content)
         print(f"File: {file_path}")
     # Check if the given path is a directory
-    # if os.path.isdir(file_path):
-    #     print(f"{file_path} is a directory. Listing contents:")
-    #     directories = os.listdir(file_path)
-    #     for item in directories:
+    if os.path.isdir(file_path):
+        print(f"{file_path} is a directory. Listing contents:")
+        directories = os.listdir(file_path)
+        for item in directories:
     #         if os.path.isfile(item):
     #             with open(file_path, 'r') as file:
     #                 content = file.read()
     #                 print("Content of the file:", content)
     #             print(f"File: {item}")
-    #         print(item)
+            print(item)
     # elif os.path.isfile(file_path):
     #     # Process the file if it's a file
     #     with open(file_path, 'r') as file:
