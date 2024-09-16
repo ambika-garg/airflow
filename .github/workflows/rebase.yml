@@ -81,7 +81,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r .github/script/requirements.txt  
+          pip install azure-storage-blob
 
       - name: Fetch and Preprocess the Data from Blob Storage
         run: |
