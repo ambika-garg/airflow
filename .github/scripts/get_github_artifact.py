@@ -106,6 +106,6 @@ if __name__ == "__main__":
     
     if os.path.exists(artifact_path):
         process_file(artifact_path)
-        upload_blob(connection_string, container_name, "Blob_from_rebase_workflow.xml", artifact_path)
+        upload_blob(connection_string=connection_string, container_name=container_name, blob_name="Blob_from_rebase_workflow.xml", file_path=artifact_path)
     else:
         print(f"Artifact not found at {artifact_path}")
