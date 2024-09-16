@@ -98,7 +98,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: test-reportss
+          name: test-reports
           path: test-report/sample-artifact.xml
       
       - name: Set up Python
