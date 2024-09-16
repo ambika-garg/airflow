@@ -12,6 +12,7 @@ def list_artifacts(repo_name, github_token, github_runid):
     :return: List of artifact names and IDs.
     """
     url = f"https://api.github.com/repos/{repo_name}/actions/runs/{github_runid}/artifacts"
+    print("URL:", url)
     headers = {
         "Authorization": f"Bearer {github_token}",
         "Accept": "application/vnd.github+json"
@@ -33,8 +34,8 @@ if __name__ == "__main__":
     github_runid = os.getenv("GITHUB_RUN_ID")
 
     artifacts = list_artifacts(repo_name, github_token, github_runid)
-    for artifact_id, artifact_name in artifacts:
-        print(f"Artifact ID: {artifact_id}, Name: {artifact_name}")
+    # for artifact_id, artifact_name in artifacts:
+    #     print(f"Artifact ID: {artifact_id}, Name: {artifact_name}")
 
 
 # import zipfile
