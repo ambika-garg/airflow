@@ -70,7 +70,7 @@ def process_file(file_path):
         file.write("\nProcessed by Python script")
 
 if __name__ == "__main__":
-    artifact_path = 'test-report/sample-artifact.xml'  # Path where the artifact was downloaded
+    artifact_path = 'sample-artifact.xml'  # Path where the artifact was downloaded
     if os.path.exists(artifact_path):
         process_file(artifact_path)
     else:
