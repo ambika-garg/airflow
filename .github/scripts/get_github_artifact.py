@@ -10,7 +10,7 @@ def list_artifacts(repo_owner, repo_name, github_token):
     :param github_token: GitHub Personal Access Token.
     :return: List of artifact names and IDs.
     """
-    url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/actions/artifacts"
+    url = f"https://api.github.com/repos/{repo_name}/actions/artifacts"
     headers = {
         "Authorization": f"Bearer {github_token}",
         "Accept": "application/vnd.github+json"
