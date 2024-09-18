@@ -94,10 +94,6 @@ def process_file(file_path):
             print("Content of the file:", content)
         print(f"File: {file_path}")
 
-def upload_blob(file_path):
-    print(f"Uploading {file_path} to Azure Blob Storage")
-    # Upload the file to Azure Blob Storage here
-
 if __name__ == "__main__":
     artifact_path = 'test-report/sample-artifact.xml'  # Path where the artifact was downloaded
     connection_string = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
