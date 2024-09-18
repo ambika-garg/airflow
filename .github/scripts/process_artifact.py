@@ -4,8 +4,8 @@ import xml.etree.ElementTree as ET
 
 from azure.storage.blob import BlobServiceClient
 
-XML_ARTIFACT_PATH = 'tests/pytest-report.xml'
-JSON_OUTPUT_PATH = 'tests/processed-report.json'
+XML_ARTIFACT_PATH = 'pytest-report/pytest-report.xml'
+JSON_OUTPUT_PATH = 'pytest-report/processed-report.json'
 
 def parse_xml_to_json(xml_content):
     # Parse XML content
