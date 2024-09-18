@@ -95,9 +95,8 @@ def process_file(file_path):
         print(f"File: {file_path}")
 
 if __name__ == "__main__":
-    artifact_path = 'test-report/sample-artifact.xml'  # Path where the artifact was downloaded
+    artifact_path = 'pytest-report/pytest-report.xml'  # Path where the artifact was downloaded
     connection_string = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
-    print(connection_string)
     container_name = "airflow-system-dashboard-output"
     
     if os.path.exists(artifact_path):
