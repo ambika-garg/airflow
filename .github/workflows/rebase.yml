@@ -91,7 +91,7 @@ jobs:
       - name: Check if artifact exists
         id: artifact_check
         run: |
-          if [[ ! -f pytest-report ]]; then
+          if [[ ! -f pytest-report/pytest-report.xml ]]; then
             echo "Artifact does not exist"
             exit 1
           fi
