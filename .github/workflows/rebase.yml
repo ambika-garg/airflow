@@ -21,72 +21,66 @@ jobs:
           git config --global user.name "Ambika Garg"
           git config --global user.email "ambikagarg1101@gmail.com"
 
-      # TODO: DONOT DELETE IT OR UNCOMMENT IT IN DEVELOPMENT
-      # - name: Git Pull
-      #   run: |
-      #     git pull
-
-      # - name: Fetch Upstream
-      #   run: |
-      #     git remote add upstream https://github.com/apache/airflow.git
-      #     git fetch upstream
-
-      # - name: Rebase Dev-Fork with Upstream
-      #   run: |
-      #     git checkout dev-fabric
-      #     git rebase upstream/main
-      #     git push origin dev-fabric --force-with-lease
-
-      # - name: Temporary checkout Dev-Fork
-      #   run: |
-      #     git pull
-      #     git checkout dev-fabric
-
-      # - name: Install Breeze
-      #   uses: ./.github/actions/breeze
-      # - name: Run System Tests for Microsoft Fabric
-      #   id: system-tests-for-microsoft-fabric
-      #   env:
-      #     DATASET_ID: "${{ secrets.DATASET_ID }}"
-      #     GROUP_ID: "${{ secrets.GROUP_ID }}"
-      #     CLIENT_ID: "${{ secrets.CLIENT_ID }}"
-      #     CLIENT_SECRET: "${{ secrets.CLIENT_SECRET }}"
-      #     TENANT_ID: "${{ secrets.TENANT_ID }}"
-      #   run: |
-      #       breeze testing tests \
-      #       tests/system/providers/microsoft/fabric/example_fabric_item_run.py \
-      #       --system microsoft \
-      #       --junitxml=tests/pytest-report.xml
-
-      # - name: Upload Pytest Report to Github artifact storage
-      #   uses: actions/upload-artifact@v3
-      #   if: success() || failure()
-      #   with:
-      #     name: pytest-report
-      #     path: tests/pytest-report.xml
-
-      # - name: Upload Test report to Azure Blob storage
-      #   uses: fixpoint/azblob-upload-artifact@v4
-      #   if: success() || failure()
-      #   with:
-      #     connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-      #     name: pytest-report.xml
-      #     container: airflow-system-dashboard-input
-      #     path: test_runs
-
-      - name: Generate XML file
+      - name: Git Pull
         run: |
-          mkdir -p test-report
-          echo "version: '1.0'" > test-report/sample-artifact.xml
-          echo "build_number: 42" >> test-report/sample-artifact.xml
-          echo "artifact_path: /path/to/artifact" >> test-report/sample-artifact.xml
-          cat test-report/sample-artifact.xml  # Display the generated file content
-      
-      - name: Upload artifacts
+          git pull
+
+      - name: Fetch Upstream
+        run: |
+          git remote add upstream https://github.com/apache/airflow.git
+          git fetch upstream
+
+      - name: Rebase Dev-Fork with Upstream
+        run: |
+          git checkout dev-fabric
+          git rebase upstream/main
+          git push origin dev-fabric --force-with-lease
+
+      - name: Install Breeze
+        uses: ./.github/actions/breeze
+      - name: Run System Tests for Microsoft Fabric
+        id: system-tests-for-microsoft-fabric
+        env:
+          DATASET_ID: "${{ secrets.DATASET_ID }}"
+          GROUP_ID: "${{ secrets.GROUP_ID }}"
+          CLIENT_ID: "${{ secrets.CLIENT_ID }}"
+          CLIENT_SECRET: "${{ secrets.CLIENT_SECRET }}"
+          TENANT_ID: "${{ secrets.TENANT_ID }}"
+        run: |
+            breeze testing tests \
+            tests/system/providers/microsoft/fabric/example_fabric_item_run.py \
+            --system microsoft \
+            --junitxml=tests/pytest-report.xml
+
+      - name: Upload Pytest Report to Github artifact storage
         uses: actions/upload-artifact@v3
+        if: success() || failure()
         with:
-          name: test-reports
+          name: pytest-report
           path: test-report
+
+      - name: Upload Test report to Azure Blob storage
+        uses: fixpoint/azblob-upload-artifact@v4
+        if: success() || failure()
+        with:
+          connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+          name: pytest-report.xml
+          container: airflow-system-dashboard-input
+          path: test-report
+
+      # - name: Generate XML file
+      #   run: |
+      #     mkdir -p test-report
+      #     echo "version: '1.0'" > test-report/sample-artifact.xml
+      #     echo "build_number: 42" >> test-report/sample-artifact.xml
+      #     echo "artifact_path: /path/to/artifact" >> test-report/sample-artifact.xml
+      #     cat test-report/sample-artifact.xml  # Display the generated file content
+      
+      # - name: Upload artifacts
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: test-reports
+      #     path: test-report
 
   process:
     runs-on: ubuntu-latest
@@ -107,7 +101,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: test-reports
+          name: test-report
           path: test-report
       
       - name: Set up Python
