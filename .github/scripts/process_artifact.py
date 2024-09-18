@@ -97,7 +97,7 @@ def process_file(file_path):
     json_data = json.dumps(data, indent=4)
     
     # Fetch Timestamp
-    first_testcase = next(iter(json_data.values()))
+    first_testcase = next(iter(data.values()))
     timestamp = first_testcase.get('timestamp', '')
     
     # Blob name
