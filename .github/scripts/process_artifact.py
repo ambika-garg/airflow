@@ -53,7 +53,7 @@ def parse_xml_to_json(xml_content):
                     testcases[testcase_name] = testsuite['testcase']
                     testcases[testcase_name]['timestamp'] = timestamp
 
-    return testcases
+    return timestamp, testcases
 
 def upload_blob(connection_string: str, container_name: str, blob_name: str, file_path: str) -> None:
     """
@@ -91,15 +91,11 @@ def process_file(file_path):
             xml_content = file.read()
     
     # Convert XML to JSON
-    data = parse_xml_to_json(xml_content)
+    timestamp, data = parse_xml_to_json(xml_content)
     
     # Convert to JSON string
     json_data = json.dumps(data, indent=4)
-    
-    # Fetch Timestamp
-    first_testcase = next(iter(data.values()))
-    timestamp = first_testcase.get('timestamp', '')
-    
+        
     # Blob name
     blob_name = f"pytest-report-{timestamp}.json"
     return blob_name, json_data
@@ -115,6 +111,7 @@ if __name__ == "__main__":
     
     if os.path.exists(XML_ARTIFACT_PATH):
         blob_name, json_data = process_file(XML_ARTIFACT_PATH)
+        
         save_json(json_data, JSON_OUTPUT_PATH)
         
         upload_blob(

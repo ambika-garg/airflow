@@ -21,43 +21,37 @@ jobs:
           git config --global user.name "Ambika Garg"
           git config --global user.email "ambikagarg1101@gmail.com"
 
-      # - name: Git Pull
-      #   run: |
-      #     git pull
-      #     git branch -a
-
-      # - name: Fetch Upstream
-      #   run: |
-      #     git remote add upstream https://github.com/apache/airflow.git
-      #     git fetch upstream
-
-      # - name: Rebase Dev-Fork with Upstream
-      #   run: |
-      #     git checkout dev-fabric
-      #     git rebase upstream/main
-      #     git push https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/airflow.git dev-fabric --force-with-lease
-
-      # - name: Install Breeze
-      #   uses: ./.github/actions/breeze
-      # - name: Run System Tests for Microsoft Fabric
-      #   id: system-tests-for-microsoft-fabric
-      #   env:
-      #     DATASET_ID: "${{ secrets.DATASET_ID }}"
-      #     GROUP_ID: "${{ secrets.GROUP_ID }}"
-      #     CLIENT_ID: "${{ secrets.CLIENT_ID }}"
-      #     CLIENT_SECRET: "${{ secrets.CLIENT_SECRET }}"
-      #     TENANT_ID: "${{ secrets.TENANT_ID }}"
-      #   run: |
-      #       breeze testing tests \
-      #       tests/system/providers/microsoft/example_mock_system_test.py \
-      #       --system microsoft \
-      #       --junitxml=tests/pytest-report.xml
-
-      # TODO: DELETE IT LATER: IT's JUST FOR REDUCING DEVELOPMENT TIME
-      - name: Copy the pytest yaml to Github artifact storage
+      - name: Git Pull
         run: |
-          mkdir -p tests
-          cp tests/pytest-report.xml tests/pytest-report.xml
+          git pull
+          git branch -a
+
+      - name: Fetch Upstream
+        run: |
+          git remote add upstream https://github.com/apache/airflow.git
+          git fetch upstream
+
+      - name: Rebase Dev-Fork with Upstream
+        run: |
+          git checkout dev-fabric
+          git rebase upstream/main
+          git push https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/airflow.git dev-fabric --force-with-lease
+
+      - name: Install Breeze
+        uses: ./.github/actions/breeze
+      - name: Run System Tests for Microsoft Fabric
+        id: system-tests-for-microsoft-fabric
+        env:
+          DATASET_ID: "${{ secrets.DATASET_ID }}"
+          GROUP_ID: "${{ secrets.GROUP_ID }}"
+          CLIENT_ID: "${{ secrets.CLIENT_ID }}"
+          CLIENT_SECRET: "${{ secrets.CLIENT_SECRET }}"
+          TENANT_ID: "${{ secrets.TENANT_ID }}"
+        run: |
+            breeze testing tests \
+            tests/system/providers/microsoft/example_mock_system_test.py \
+            --system microsoft \
+            --junitxml=tests/pytest-report.xml
 
       - name: Upload Pytest Report to Github artifact storage
         uses: actions/upload-artifact@v3
