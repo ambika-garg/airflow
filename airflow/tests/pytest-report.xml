@@ -1,28 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <testsuites>
-    <testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="14.018"
-        timestamp="2024-08-21T15:12:02.544023+00:00" hostname="c23f8ff264ae">
-        <testcase classname="tests.system.providers.microsoft.azure.example_mock_test"
-            name="test_run" time="11.333" />
-    </testsuite>
-</testsuites>
-
-
-<?xml version="1.0" encoding="utf-8"?>
-<testsuites name="pytest" errors="0" failures="1" skipped="1" tests="3" time="0.123"
-    timestamp="2024-08-27T10:39:06" hostname="localhost">
-    <testsuite name="sample_tests" tests="3" errors="0" failures="1" skipped="1" time="0.123">
-        <testcase classname="tests.test_module.TestClass" name="test_pass" time="0.045" />
-        <testcase classname="tests.test_module.TestClass" name="test_fail" time="0.078">
-            <failure message="AssertionError: assert 1 == 2" type="AssertionError">Traceback (most
-                recent call last):
-                File "/path/to/your/test_module.py", line 10, in test_fail
-                assert 1 == 2
-                AssertionError: assert 1 == 2</failure>
-        </testcase>
-        <testcase classname="tests.test_module.TestClass" name="test_skip" time="0.000">
-            <skipped message="skipped due to a reason" type="Skipped">Skipped: skipped due to a
-                reason</skipped>
-        </testcase>
-    </testsuite>
+        <testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="13.806"
+                timestamp="2024-09-12T10:28:22.783393+00:00" hostname="42b875a3388c">
+                <testcase
+                        classname="tests.system.providers.microsoft.fabric.example_fabric_item_run"
+                        name="test_run" time="9.725">
+                        <failure
+                                message="AssertionError: The system test failed, please look at the logs to find out the underlying failed task(s)">def
+                                test_run():
+                                dag.on_failure_callback = add_callback(dag.on_failure_callback,
+                                callback)
+                                dag.on_success_callback = add_callback(dag.on_success_callback,
+                                callback)
+                                # If the env variable ``_AIRFLOW__SYSTEM_TEST_USE_EXECUTOR`` is set,
+                                then use an executor to run the
+                                # DAG
+                                dag_run =
+                                dag.test(use_executor=os.environ.get("_AIRFLOW__SYSTEM_TEST_USE_EXECUTOR")
+                                == "1")
+                                &gt; assert (
+                                dag_run.state == DagRunState.SUCCESS
+                                ), "The system test failed, please look at the logs to find out the
+                                underlying failed task(s)"
+                                E AssertionError: The system test failed, please look at the logs to
+                                find out the underlying failed task(s)
+                                tests/system/utils/__init__.py:64: AssertionError</failure>
+                </testcase>
+                <testcase
+                        classname="tests.system.providers.microsoft.fabric.example_fabric_item_run"
+                        name="test_run" time="9.725">
+                        <failure
+                                message="AssertionError: The system test failed, please look at the logs to find out the underlying failed task(s)">def
+                                test_run():
+                                dag.on_failure_callback = add_callback(dag.on_failure_callback,
+                                callback)
+                                dag.on_success_callback = add_callback(dag.on_success_callback,
+                                callback)
+                                # If the env variable ``_AIRFLOW__SYSTEM_TEST_USE_EXECUTOR`` is set,
+                                then use an executor to run the
+                                # DAG
+                                dag_run =
+                                dag.test(use_executor=os.environ.get("_AIRFLOW__SYSTEM_TEST_USE_EXECUTOR")
+                                == "1")
+                                &gt; assert (
+                                dag_run.state == DagRunState.SUCCESS
+                                ), "The system test failed, please look at the logs to find out the
+                                underlying failed task(s)"
+                                E AssertionError: The system test failed, please look at the logs to
+                                find out the underlying failed task(s)
+                                tests/system/utils/__init__.py:64: AssertionError</failure>
+                </testcase>
+        </testsuite>
 </testsuites>

@@ -56,6 +56,7 @@ jobs:
       # TODO: DELETE IT LATER: IT's JUST FOR REDUCING DEVELOPMENT TIME
       - name: Copy the pytest yaml to Github artifact storage
         run: |
+          mkdir -p tests
           cp tests/pytest-report.xml tests/pytest-report.xml
 
       - name: Upload Pytest Report to Github artifact storage
@@ -88,7 +89,7 @@ jobs:
   #           exit 1
   #         fi
 
-  process:
+  preprocess:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
