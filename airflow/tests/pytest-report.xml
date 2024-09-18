@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+    <testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="14.018"
+        timestamp="2024-08-21T15:12:02.544023+00:00" hostname="c23f8ff264ae">
+        <testcase classname="tests.system.providers.microsoft.azure.example_mock_test"
+            name="test_run" time="11.333" />
+    </testsuite>
+</testsuites>
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites name="pytest" errors="0" failures="1" skipped="1" tests="3" time="0.123"
+    timestamp="2024-08-27T10:39:06" hostname="localhost">
+    <testsuite name="sample_tests" tests="3" errors="0" failures="1" skipped="1" time="0.123">
+        <testcase classname="tests.test_module.TestClass" name="test_pass" time="0.045" />
+        <testcase classname="tests.test_module.TestClass" name="test_fail" time="0.078">
+            <failure message="AssertionError: assert 1 == 2" type="AssertionError">Traceback (most
+                recent call last):
+                File "/path/to/your/test_module.py", line 10, in test_fail
+                assert 1 == 2
+                AssertionError: assert 1 == 2</failure>
+        </testcase>
+        <testcase classname="tests.test_module.TestClass" name="test_skip" time="0.000">
+            <skipped message="skipped due to a reason" type="Skipped">Skipped: skipped due to a
+                reason</skipped>
+        </testcase>
+    </testsuite>
+</testsuites>
