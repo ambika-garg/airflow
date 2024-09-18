@@ -131,7 +131,7 @@ jobs:
 
       - name: Run Python to access Artifact and Process it
         run: |
-          python .github/scripts/get_github_artifact.py
+          python .github/scripts/process_artifact.py
 
       #   - name: Fetch and Preprocess the Data from Blob Storage
       #     run: |
