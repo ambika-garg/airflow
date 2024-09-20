@@ -13,14 +13,14 @@ JSON_OUTPUT_PATH = "pytest-report/processed-report.json"
 def parse_xml_to_json(xml_content):
     # Parse XML content
     root = ET.fromstring(xml_content)
-
+    
     # Helper function to convert XML elements to dictionary
     def elem_to_dict(elem):
         # Convert attributes to dictionary
         data = elem.attrib.copy()
         # Add children if they exist
         if elem.text and elem.text.strip():
-            data["text"] = elem.text.strip()
+            data['text'] = elem.text.strip()
         # Add child elements
         for child in elem:
             child_data = elem_to_dict(child)
@@ -36,27 +36,24 @@ def parse_xml_to_json(xml_content):
 
     # Convert the root element to dictionary
     data = elem_to_dict(root)
-
+        
     # Create a testcase-wise structure
-    testcases = {}
-    if "testsuite" in data:
-        testsuite = data["testsuite"]
-        timestamp = testsuite.get("timestamp", None)
-        if "testcase" in testsuite:
-            if isinstance(testsuite["testcase"], list):
-                for testcase in testsuite["testcase"]:
-                    testcase_name = testcase.get("name")
-                    if testcase_name:
-                        testcases[testcase_name] = testcase
-                        # Include timestamp in each testcase
-                        testcases[testcase_name]["timestamp"] = timestamp
-            else:
-                testcase_name = testsuite["testcase"].get("name")
-                if testcase_name:
-                    testcases[testcase_name] = testsuite["testcase"]
-                    testcases[testcase_name]["timestamp"] = timestamp
+    testcases = []
+    if 'testsuite' in data:
+        testsuite = data['testsuite']        
+        timestamp = testsuite.get('timestamp', None)
+        if 'testcase' in testsuite:
+            for testcase in testsuite['testcase']:
+                testcaseobj = {}
+                testcaseobj['name'] = testcase.get('name', None)
+                testcaseobj['time'] = testcase.get('time', None)
+                testcaseobj['classname'] = testcase.get('classname', None)
+                testcaseobj['failure'] = testcase.get('failure', None)
+                testcaseobj['timestamp'] = timestamp
+                
+                testcases.append(testcaseobj)
 
-    return timestamp, testcases
+    return testcases, timestamp
 
 
 def upload_blob(connection_string: str, container_name: str, blob_name: str, file_path: str) -> None:
@@ -97,7 +94,7 @@ def process_file(file_path):
             xml_content = file.read()
 
     # Convert XML to JSON
-    timestamp, data = parse_xml_to_json(xml_content)
+    data, timestamp = parse_xml_to_json(xml_content)
 
     # Convert to JSON string
     json_data = json.dumps(data, indent=4)
