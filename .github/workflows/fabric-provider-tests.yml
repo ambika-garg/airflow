@@ -4,71 +4,71 @@ on:  # yamllint disable-line rule:truthy
   # schedule: []  # Disable the default schedule
   workflow_dispatch:  # Allows manual triggering
 jobs:
-  rebase:
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.AIRFLOW_FORK_TOKEN }}
-          persist-credentials: false
+  # rebase:
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v3
+  #       with:
+  #         token: ${{ secrets.AIRFLOW_FORK_TOKEN }}
+  #         persist-credentials: false
 
-      # Later on set it as common step
-      - name: Set Up Git
-        run: |
-          git config --global user.name "Ambika Garg"
-          git config --global user.email "ambikagarg1101@gmail.com"
+  #     # Later on set it as common step
+  #     - name: Set Up Git
+  #       run: |
+  #         git config --global user.name "Ambika Garg"
+  #         git config --global user.email "ambikagarg1101@gmail.com"
 
-      - name: Git Pull
-        run: |
-          git pull
-          git branch -a
+  #     - name: Git Pull
+  #       run: |
+  #         git pull
+  #         git branch -a
 
-      # - name: Fetch Upstream
-      #   run: |
-      #     git remote add upstream https://github.com/apache/airflow.git
-      #     git fetch upstream
+  #     # - name: Fetch Upstream
+  #     #   run: |
+  #     #     git remote add upstream https://github.com/apache/airflow.git
+  #     #     git fetch upstream
 
-      - name: Rebase Dev-Fork with Upstream
-        run: |
-          git checkout dev-fabric
-      #     git rebase upstream/main
-      #     git push https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/airflow.git dev-fabric --force-with-lease
+  #     - name: Rebase Dev-Fork with Upstream
+  #       run: |
+  #         git checkout dev-fabric
+  #     #     git rebase upstream/main
+  #     #     git push https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/airflow.git dev-fabric --force-with-lease
 
-      - name: Install Breeze
-        uses: ./.github/actions/breeze
-      - name: Run System Tests for Microsoft Fabric Provider
-        id: system-tests-for-microsoft-fabric
-        env:
-          DATASET_ID: "${{ secrets.DATASET_ID }}"
-          GROUP_ID: "${{ secrets.GROUP_ID }}"
-          CLIENT_ID: "${{ secrets.CLIENT_ID }}"
-          CLIENT_SECRET: "${{ secrets.CLIENT_SECRET }}"
-          TENANT_ID: "${{ secrets.TENANT_ID }}"
-        run: |
-            breeze testing tests \
-            tests/system/providers/microsoft/fabric/example_fabric_item_run.py \
-            tests/system/providers/microsoft/fabric/example_mock_system_test.py \
-            --system microsoft \
-            --junitxml=tests/pytest-report.xml
+  #     - name: Install Breeze
+  #       uses: ./.github/actions/breeze
+  #     - name: Run System Tests for Microsoft Fabric Provider
+  #       id: system-tests-for-microsoft-fabric
+  #       env:
+  #         DATASET_ID: "${{ secrets.DATASET_ID }}"
+  #         GROUP_ID: "${{ secrets.GROUP_ID }}"
+  #         CLIENT_ID: "${{ secrets.CLIENT_ID }}"
+  #         CLIENT_SECRET: "${{ secrets.CLIENT_SECRET }}"
+  #         TENANT_ID: "${{ secrets.TENANT_ID }}"
+  #       run: |
+  #           breeze testing tests \
+  #           tests/system/providers/microsoft/fabric/example_fabric_item_run.py \
+  #           tests/system/providers/microsoft/fabric/example_mock_system_test.py \
+  #           --system microsoft \
+  #           --junitxml=tests/pytest-report.xml
 
-      - name: Upload Pytest Report to Github artifact storage
-        uses: actions/upload-artifact@v3
-        if: success() || failure()
-        with:
-          name: pytest-report
-          path: tests/pytest-report.xml # path of the file to upload
+  #     - name: Upload Pytest Report to Github artifact storage
+  #       uses: actions/upload-artifact@v3
+  #       if: success() || failure()
+  #       with:
+  #         name: pytest-report
+  #         path: tests/pytest-report.xml # path of the file to upload
 
-      - name: Upload Test report to Azure Blob storage
-        uses: fixpoint/azblob-upload-artifact@v4
-        if: success() || failure()
-        with:
-          connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-          name: pytest-report.xml
-          container: airflow-system-dashboard-input
-          path: tests/pytest-report.xml
+  #     - name: Upload Test report to Azure Blob storage
+  #       uses: fixpoint/azblob-upload-artifact@v4
+  #       if: success() || failure()
+  #       with:
+  #         connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+  #         name: pytest-report.xml
+  #         container: airflow-system-dashboard-input
+  #         path: tests/pytest-report.xml
 
   preprocess:
     runs-on: ubuntu-latest
@@ -78,7 +78,7 @@ jobs:
       REPO_OWNER: ${{ github.repository_owner }}
       REPO_NAME: ${{ github.repository }}
       GITHUB_RUN_ID: ${{ github.run_id }}
-    needs: rebase  # This job runs only after the 'check-artifact' job completes (success or failure)
+    # needs: rebase  # This job runs only after the 'check-artifact' job completes (success or failure)
     if: success() || failure()
     steps:
       - name: Checkout Repository
@@ -87,25 +87,25 @@ jobs:
           token: ${{ secrets.AIRFLOW_FORK_TOKEN }}
           persist-credentials: false
 
-      - name: Download artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: pytest-report
-          path: pytest-report
+      # - name: Download artifact
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: pytest-report
+      #     path: pytest-report
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+      # - name: Set up Python
+      #   uses: actions/setup-python@v4
+      #   with:
+      #     python-version: '3.10'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install azure-storage-blob azure-identity
+      # - name: Install dependencies
+      #   run: |
+      #     python -m pip install --upgrade pip
+      #     pip install azure-storage-blob azure-identity
 
-      - name: Apply preprocessing to the report generated and store in output container
-        run: |
-          python .github/scripts/process_artifact.py
+      # - name: Apply preprocessing to the report generated and store in output container
+      #   run: |
+      #     python .github/scripts/process_artifact.py
 
       - name: Get Last k runs and consolidate
         run: |

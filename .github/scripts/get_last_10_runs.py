@@ -79,6 +79,7 @@ def consolidate_runs(connection_string, container_name, k=10):
     try:
         blob_count = 0
         blob_list = container_client.list_blobs()
+        print(blob_list)
         # blob_list.sort(reverse=True)
 
         for blob in blob_list:
