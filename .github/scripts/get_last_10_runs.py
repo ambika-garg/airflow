@@ -2,7 +2,6 @@ from __future__ import annotations
 import json
 import os
 from azure.storage.blob import BlobServiceClient
-from scripts.process_artifact import upload_blob
 
 def preprocess_blob_data(report_group_by_testcases, blob_data):
     """
@@ -29,6 +28,38 @@ def preprocess_blob_data(report_group_by_testcases, blob_data):
                 "timestamp": item["timestamp"],
                 "type": "failure" if item["failure"] else "success"
             })
+
+
+def upload_blob(connection_string: str, container_name: str, blob_name: str, file_path: str) -> None:
+    """
+    Uploads a file to Azure Blob Storage.
+
+    :param connection_string: The connection string to the Azure Storage account.
+    :param container_name: The name of the container where the blob will be uploaded.
+    :param blob_name: The name of the blob in the container.
+    :param file_path: The path to the local file to be uploaded.
+    :raises ResourceExistsError: If the blob already exists and the upload is not allowed to overwrite.
+    """
+    try:
+        # Create a BlobServiceClient
+        blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+
+        # Create a ContainerClient
+        container_client = blob_service_client.get_container_client(container_name)
+
+        # Create a BlobClient
+        blob_client = container_client.get_blob_client(blob_name)
+
+        # Upload the file
+        with open(file_path, "rb") as data:
+            blob_client.upload_blob(
+                data, overwrite=True
+            )  # Set overwrite=True to replace if blob already exists
+
+        print(f"File '{file_path}' uploaded to blob '{blob_name}' in container '{container_name}'.")
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 def consolidate_runs(connection_string, container_name, k=10):
     """
