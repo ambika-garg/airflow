@@ -31,9 +31,9 @@ jobs:
       #     git remote add upstream https://github.com/apache/airflow.git
       #     git fetch upstream
 
-      # - name: Rebase Dev-Fork with Upstream
-      #   run: |
-      #     git checkout dev-fabric
+      - name: Rebase Dev-Fork with Upstream
+        run: |
+          git checkout dev-fabric
       #     git rebase upstream/main
       #     git push https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/airflow.git dev-fabric --force-with-lease
 
