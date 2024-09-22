@@ -49,7 +49,9 @@ jobs:
           TENANT_ID: "${{ secrets.TENANT_ID }}"
         run: |
             breeze testing tests \
-            --test-type "Providers[-fabric]" \
+            breeze testing tests \
+            tests/system/providers/microsoft/fabric/example_fabric_item_run.py \
+            tests/system/providers/microsoft/fabric/example_mock_system_test.py \
             --system microsoft \
             --junitxml=tests/pytest-report.xml
 
@@ -106,12 +108,6 @@ jobs:
         run: |
           python .github/scripts/process_artifact.py
 
-      - name: Get Last k runs and consolidate into single json report
+      - name: Get Last k runs and consolidate
         run: |
           python .github/scripts/get_last_10_runs.py
-
-      #   - name: Fetch and Preprocess the Data from Blob Storage
-      #     run: |
-      #       python .github/scripts/fetch_and_proprocess_data.py
-      #     env:
-      #       AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
