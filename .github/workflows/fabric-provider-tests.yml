@@ -21,10 +21,10 @@ jobs:
           git config --global user.name "Ambika Garg"
           git config --global user.email "ambikagarg1101@gmail.com"
 
-      # - name: Git Pull
-      #   run: |
-      #     git pull
-      #     git branch -a
+      - name: Git Pull
+        run: |
+          git pull
+          git branch -a
 
       # - name: Fetch Upstream
       #   run: |
