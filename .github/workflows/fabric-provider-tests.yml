@@ -119,6 +119,7 @@ jobs:
   
   CopyArtifactToGithubPageRepo:
     runs-on: ubuntu-latest
+    if: success()
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
