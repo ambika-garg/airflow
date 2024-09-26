@@ -103,9 +103,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install azure-storage-blob azure-identity
 
-      - name: Apply preprocessing to the report generated and store in output container
-        run: |
-          python .github/scripts/process_artifact.py
+      # - name: Apply preprocessing to the report generated and store in output container
+      #   run: |
+      #     python .github/scripts/process_artifact.py
 
       - name: Get Last k runs and consolidate
         run: |
