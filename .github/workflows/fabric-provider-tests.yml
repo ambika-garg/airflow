@@ -133,7 +133,7 @@ jobs:
   
       - name: Clone target repository
         run: |
-          git clone https://github.com/ambika-garg/fabric-airflow-system-dashboard.git
+          git clone https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git
           ls
           cd fabric-airflow-system-dashboard/_data
 
