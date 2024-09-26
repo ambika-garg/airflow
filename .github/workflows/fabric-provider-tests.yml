@@ -137,6 +137,11 @@ jobs:
           ls
           cd fabric-airflow-system-dashboard/_data
 
+      - name: Git Pull
+        run: |
+          git pull
+          git branch -a
+
       - name: Copy generated file to target repository
         run: |
           cp .github/scripts/temp.json report.json
