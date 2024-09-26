@@ -21,7 +21,6 @@ def preprocess_blob_data(report_group_by_testcases, blob_data):
                         "type": "failure" if item["failure"] else "success" # Improve it, need to consider all the test cases like failure, success, skipped, cancelled, etc.
                     }
                 ]
-
             }
         else:
             report_group_by_testcases[testname]["last_runs"].append({
@@ -78,8 +77,8 @@ def consolidate_runs(connection_string, container_name, k=10):
     report_group_by_testcases = {}
     try:
         blob_count = 0
+        blob_list = container_client.list_blobs()
         if blob_list is not None:
-            blob_list = container_client.list_blobs()
             print("blob_list", blob_list)
         else:
             print("No blobs found or container doesn't exist.")
