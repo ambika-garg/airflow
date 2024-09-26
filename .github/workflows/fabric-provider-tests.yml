@@ -139,7 +139,7 @@ jobs:
 
       - name: Git Pull
         run: |
-          git pull
+          git pull https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git
           git branch -a
 
       - name: Copy generated file to target repository
