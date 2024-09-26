@@ -141,7 +141,7 @@ jobs:
 
       - name: Git Pull
         run: |
-          git pull https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git --rebase
+          git pull https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git --merge
           git branch -a
 
       - name: Copy generated file to target repository
