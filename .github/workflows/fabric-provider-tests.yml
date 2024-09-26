@@ -125,7 +125,7 @@ jobs:
         run: |
           git clone https://github.com/ambika-garg/fabric-airflow-system-dashboard.git
           ls
-          cd _data
+          cd fabric-airflow-system-dashboard/_data
 
       - name: Copy generated file to target repository
         run: |
