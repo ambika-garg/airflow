@@ -78,6 +78,7 @@ def consolidate_runs(connection_string, container_name, k=10):
     try:
         blob_count = 0
         blob_list = container_client.list_blobs()
+        blob_list = [blob.name for blob in blob_list]
         if blob_list is not None:
             print("blob_list", blob_list)
         else:
@@ -113,10 +114,10 @@ if __name__ == "__main__":
     connection_string = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
     container_name = "airflow-system-dashboard-output"
     
-    blobs = consolidate_runs(connection_string, container_name, k=10)
-    print("Blobs in container:")
-    for blob in blobs:
-        print(blob)
+    consolidate_runs(connection_string, container_name, k=10)
+    # print("Blobs in container:")
+    # for blob in blobs:
+    #     print(blob)
 
 
 
