@@ -87,11 +87,11 @@ jobs:
           token: ${{ secrets.AIRFLOW_FORK_TOKEN }}
           persist-credentials: false
 
-      # - name: Download artifact
-      #   uses: actions/download-artifact@v3
-      #   with:
-      #     name: pytest-report
-      #     path: pytest-report
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: pytest-report
+          path: pytest-report
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -103,6 +103,32 @@ jobs:
           python -m pip install --upgrade pip
           pip install azure-storage-blob azure-identity
 
+      - name: Apply preprocessing to the report generated and store in output container
+        run: |
+          python .github/scripts/process_artifact.py
+
       - name: Get Last k runs and consolidate
         run: |
           python .github/scripts/get_last_10_runs.py
+
+  
+  CopyArtifactToGithubPageRepo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.AIRFLOW_FORK_TOKEN }}
+          persist-credentials: false
+      
+      - name: Clone target repository
+        run: |
+          git clone https://github.com/ambika-garg/fabric-airflow-system-dashboard.git
+          cd _data
+
+      - name: Copy generated file to target repository
+        run: |
+          cp .github/scripts/temp.json report.json
+          git add report.json
+          git commit -m "Added temp data."
+          git push
