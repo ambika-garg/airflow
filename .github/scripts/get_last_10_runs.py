@@ -78,33 +78,29 @@ def consolidate_runs(connection_string, container_name, k=10):
     try:
         blob_count = 0
         blob_list = container_client.list_blobs()
-        blob_list = [blob.name for blob in blob_list]
         if blob_list is not None:
             print("blob_list", blob_list)
+            for blob in blob_list:
+                if blob_count > k:
+                    break
+                blob_client = container_client.get_blob_client(blob)
+                blob_data = blob_client.download_blob().readall()
+                blob_count += 1
+                
+                # Preprocess the blob data
+                preprocess_blob_data(report_group_by_testcases, blob_data)
+            
+            # Convert the dictionary to a list
+            report_group_by_testcases_list = [{"name": key, **value} for key, value in report_group_by_testcases.items()]
+            
+            # Write it to json file
+            with open("consolidate-blob/report.json", "w") as json_file:
+                json.dump(report_group_by_testcases_list, json_file, indent=4)
+            
+            # Upload blob
+            upload_blob(connection_string, "consolidate-blob", "gold-report.json", "consolidate-blob/report.json")
         else:
             print("No blobs found or container doesn't exist.")
-        # blob_list.sort(reverse=True)
-
-        # for blob in blob_list:
-        #     if blob_count > k:
-        #         break
-        #     blob_client = container_client.get_blob_client(blob)
-        #     blob_data = blob_client.download_blob().readall()
-        #     blob_count += 1
-            
-        #     # Preprocess the blob data
-        #     preprocess_blob_data(report_group_by_testcases, blob_data)
-        
-        # # Convert the dictionary to a list
-        # report_group_by_testcases_list = [{"name": key, **value} for key, value in report_group_by_testcases.items()]
-        
-        # # Write it to json file
-        # with open("consolidate-blob/report.json", "w") as json_file:
-        #     json.dump(report_group_by_testcases_list, json_file, indent=4)
-        
-        # # Upload blob
-        # upload_blob(connection_string, "consolidate-blob", "gold-report.json", "consolidate-blob/report.json")
-        
     except Exception as e:
         print(f"An error occurred: {e}")
 
