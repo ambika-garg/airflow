@@ -142,4 +142,4 @@ jobs:
           cp .github/scripts/temp.json report.json
           git add report.json
           git commit -m "Added temp data."
-          git push
+          git push https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git
