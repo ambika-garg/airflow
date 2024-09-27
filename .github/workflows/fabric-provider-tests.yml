@@ -154,6 +154,7 @@ jobs:
           git remote -v
           cp .github/scripts/temp.json fabric-airflow-system-dashboard/_data/
           git status
+          cd fabric-airflow-system-dashboard
           git add .
           git commit -m "Added temp data."
           git push \
