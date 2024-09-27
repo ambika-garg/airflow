@@ -153,7 +153,8 @@ jobs:
           git checkout -b temp
           git remote -v
           cp .github/scripts/temp.json fabric-airflow-system-dashboard/_data/
-          git add report.json
+          git status
+          git add .
           git commit -m "Added temp data."
           git push \
           https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git temp --force-with-lease
