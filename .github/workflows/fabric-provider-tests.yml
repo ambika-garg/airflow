@@ -34,9 +34,9 @@ jobs:
   #     - name: Rebase Dev-Fork with Upstream
   #       run: |
   #         git checkout dev-fabric
-  #     #     git rebase upstream/main
-  #     #     git push https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/airflow.git \
-        #     dev-fabric --force-with-lease
+  #         git rebase upstream/main
+  #         git push https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/airflow.git \
+  #         dev-fabric --force-with-lease
 
   #     - name: Install Breeze
   #       uses: ./.github/actions/breeze
@@ -71,56 +71,62 @@ jobs:
   #         container: airflow-system-dashboard-input
   #         path: tests/pytest-report.xml
 
-  # preprocess:
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #     AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-  #     REPO_OWNER: ${{ github.repository_owner }}
-  #     REPO_NAME: ${{ github.repository }}
-  #     GITHUB_RUN_ID: ${{ github.run_id }}
-  #   # needs: rebase  # This job runs only after the 'check-artifact' job completes (success or failure)
-  #   if: success() || failure()
-  #   steps:
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v3
-  #       with:
-  #         token: ${{ secrets.AIRFLOW_FORK_TOKEN }}
-  #         persist-credentials: false
-
-  #     - name: Set Up Git
-  #       run: |
-  #         git config --global user.name "Ambika Garg"
-  #         git config --global user.email "ambikagarg1101@gmail.com"
-
-  #     # - name: Download artifact
-  #     #   uses: actions/download-artifact@v3
-  #     #   with:
-  #     #     name: pytest-report
-  #     #     path: pytest-report
-
-  #     - name: Set up Python
-  #       uses: actions/setup-python@v4
-  #       with:
-  #         python-version: '3.10'
-
-  #     - name: Install dependencies
-  #       run: |
-  #         python -m pip install --upgrade pip
-  #         pip install azure-storage-blob azure-identity
-
-  #     # - name: Apply preprocessing to the report generated and store in output container
-  #     #   run: |
-  #     #     python .github/scripts/process_artifact.py
-
-  #     - name: Get Last k runs and consolidate
-  #       run: |
-  #         python .github/scripts/get_last_10_runs.py
-
-
-  CopyArtifactToGithubPageRepo:
+  preprocess:
     runs-on: ubuntu-latest
-    # needs: preprocess
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+      REPO_OWNER: ${{ github.repository_owner }}
+      REPO_NAME: ${{ github.repository }}
+      GITHUB_RUN_ID: ${{ github.run_id }}
+    # needs: rebase  # This job runs only after the 'check-artifact' job completes (success or failure)
+    if: success() || failure()
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.AIRFLOW_FORK_TOKEN }}
+          persist-credentials: false
+
+      - name: Set Up Git
+        run: |
+          git config --global user.name "Ambika Garg"
+          git config --global user.email "ambikagarg1101@gmail.com"
+
+      # - name: Download artifact
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: pytest-report
+      #     path: pytest-report
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install azure-storage-blob azure-identity
+
+      # - name: Apply preprocessing to the report generated and store in output container
+      #   run: |
+      #     python .github/scripts/process_artifact.py
+
+      - name: Get Last k runs and consolidate
+        run: |
+          python .github/scripts/get_last_10_runs.py
+      
+      - name: Upload consolidate report as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: consolidate-report
+          path: consolidate-blob/report.json
+
+
+  Display-System-Tests:
+    runs-on: ubuntu-latest
+    needs: preprocess
     if: success()
     steps:
       - name: Checkout Repository
@@ -129,47 +135,21 @@ jobs:
           token: ${{ secrets.AIRFLOW_FORK_TOKEN }}
           persist-credentials: false
 
-      - name: Pushes test file
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: consolidate-report
+          path: consolidate-report
+      
+      - name: Push Test file to dashboard repo
         uses: dmnemec/copy_file_to_another_repo_action@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.AIRFLOW_FORK_TOKEN }}
         with:
-          source_file: '.github/scripts/temp.json'
+          source_file: 'consolidate-report/temp.json'
           destination_repo: 'ambika-garg/fabric-airflow-system-dashboard'
           destination_folder: '_data'
           user_email: 'ambikagarg1101@gmail.com'
           user_name: 'Ambika Garg'
-          commit_message: 'Add test file to dashboard repo'
+          commit_message: 'Add test report to dashboard repo'
 
-      # - name: Set Up Git
-      #   run: |
-      #     git config --global user.name "Ambika Garg"
-      #     git config --global user.email "ambikagarg1101@gmail.com"
-
-      # - name: Clone target repository
-      #   run: |
-      #     git clone \
-      #     https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git
-      #     git remote add dashboard-origin https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git
-      # # - name: Git Pull
-      # #   run: |
-      # #     git pull \
-      # #     https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git main
-      # #     git branch -a
-
-      # - name: Copy generated file to target repository
-      #   run: |
-      #     pwd
-      #     ls /home/runner/work/airflow/airflow
-      #     git branch
-      #     git checkout -b temp
-      #     git remote -v
-      #     cp .github/scripts/temp.json fabric-airflow-system-dashboard/_data/
-      #     git status
-      #     cd fabric-airflow-system-dashboard
-      #     git add .
-      #     git commit -m "Added temp data."
-
-      # - name: Push to target repository
-      #   run: |
-      #     git push -u dashboard-origin temp
