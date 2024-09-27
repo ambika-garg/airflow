@@ -158,4 +158,4 @@ jobs:
           git add .
           git commit -m "Added temp data."
           git push -u \
-          https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git origin temp --force-with-lease
+          https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git origin temp --force
