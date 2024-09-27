@@ -138,7 +138,7 @@ jobs:
         run: |
           git clone \
           https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git
-
+          git remote add dashboard-origin https://github.com/ambika-garg/fabric-airflow-system-dashboard.git
       # - name: Git Pull
       #   run: |
       #     git pull \
@@ -158,4 +158,4 @@ jobs:
           git add .
           git commit -m "Added temp data."
           git push -u \
-          https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git origin temp --force
+          https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git dashboard-origin temp --force
