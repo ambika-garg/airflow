@@ -129,35 +129,47 @@ jobs:
           token: ${{ secrets.AIRFLOW_FORK_TOKEN }}
           persist-credentials: false
 
-      - name: Set Up Git
-        run: |
-          git config --global user.name "Ambika Garg"
-          git config --global user.email "ambikagarg1101@gmail.com"
+      - name: Pushes test file
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.AIRFLOW_FORK_TOKEN }}
+        with:
+          source_file: '.github/scripts/temp.json'
+          destination_repo: 'https://github.com/ambika-garg/fabric-airflow-system-dashboard.git'
+          destination_folder: '_data'
+          user_email: 'ambikagarg1101@gmail.com'
+          user_name: 'Ambika Garg'
+          commit_message: 'Add test file to dashboard repo'
 
-      - name: Clone target repository
-        run: |
-          git clone \
-          https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git
-          git remote add dashboard-origin https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git
-      # - name: Git Pull
+      # - name: Set Up Git
       #   run: |
-      #     git pull \
-      #     https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git main
-      #     git branch -a
+      #     git config --global user.name "Ambika Garg"
+      #     git config --global user.email "ambikagarg1101@gmail.com"
 
-      - name: Copy generated file to target repository
-        run: |
-          pwd
-          ls /home/runner/work/airflow/airflow
-          git branch
-          git checkout -b temp
-          git remote -v
-          cp .github/scripts/temp.json fabric-airflow-system-dashboard/_data/
-          git status
-          cd fabric-airflow-system-dashboard
-          git add .
-          git commit -m "Added temp data."
+      # - name: Clone target repository
+      #   run: |
+      #     git clone \
+      #     https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git
+      #     git remote add dashboard-origin https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git
+      # # - name: Git Pull
+      # #   run: |
+      # #     git pull \
+      # #     https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git main
+      # #     git branch -a
 
-      - name: Push to target repository
-        run: |
-          git push -u dashboard-origin temp
+      # - name: Copy generated file to target repository
+      #   run: |
+      #     pwd
+      #     ls /home/runner/work/airflow/airflow
+      #     git branch
+      #     git checkout -b temp
+      #     git remote -v
+      #     cp .github/scripts/temp.json fabric-airflow-system-dashboard/_data/
+      #     git status
+      #     cd fabric-airflow-system-dashboard
+      #     git add .
+      #     git commit -m "Added temp data."
+
+      # - name: Push to target repository
+      #   run: |
+      #     git push -u dashboard-origin temp
