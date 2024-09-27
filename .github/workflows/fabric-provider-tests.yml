@@ -157,5 +157,8 @@ jobs:
           cd fabric-airflow-system-dashboard
           git add .
           git commit -m "Added temp data."
+
+      - name: Push to target repository
+        run: |
           git push -u \
-          https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git dashboard-origin temp --force
+          dashboard-origin temp --force
