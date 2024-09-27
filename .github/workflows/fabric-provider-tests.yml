@@ -148,7 +148,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.AIRFLOW_FORK_TOKEN }}
         with:
-          source_file: 'consolidate-report/report.json'
+          source_file: 'report.json'
           destination_repo: 'ambika-garg/fabric-airflow-system-dashboard'
           destination_folder: '_data'
           user_email: 'ambikagarg1101@gmail.com'
