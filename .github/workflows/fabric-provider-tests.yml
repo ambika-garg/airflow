@@ -135,13 +135,31 @@ jobs:
           token: ${{ secrets.AIRFLOW_FORK_TOKEN }}
           persist-credentials: false
 
-      - name: Download artifact from Azure Blob Storage
-        uses: fixpoint/azblob-download-artifact@v3
-        with:
-          connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-          name: gold-report.json # 'Artifact name'
-          container: consolidate-blob
-          # path: consolidate-blob/gold-report.json
+      - name: Install Azure CLI
+        run: |
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+    # Step 2: Download the file from Azure Blob Storage
+      - name: Download Blob from Azure Storage
+        env:
+          AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
+          AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
+        run: |
+          az storage blob download \
+            --account-name $AZURE_STORAGE_ACCOUNT \
+            --account-key $AZURE_STORAGE_KEY \
+            --container-name consolidate-blob \
+            --name gold-report.json \
+            --file ./report.json
+    
+
+      # - name: Download artifact from Azure Blob Storage
+        # uses: fixpoint/azblob-download-artifact@v3
+        # with:
+        #   connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+        #   name: gold-report.json # 'Artifact name'
+        #   container: consolidate-blob
+        #   # path: consolidate-blob/gold-report.json
       
       - name: Push Test file to dashboard repo
         uses: dmnemec/copy_file_to_another_repo_action@main
