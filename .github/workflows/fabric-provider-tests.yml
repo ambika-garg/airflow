@@ -147,11 +147,10 @@ jobs:
 
       - name: Copy generated file to target repository
         run: |
-          cd fabric-airflow-system-dashboard/_data
           git branch
           git checkout -b temp
           git remote -v
-          cp ./scripts/temp.json report.json
+          cp ./scripts/temp.json fabric-airflow-system-dashboard/_data/report.json
           git add report.json
           git commit -m "Added temp data."
           git push \
