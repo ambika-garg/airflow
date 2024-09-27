@@ -151,7 +151,7 @@ jobs:
           git branch
           git checkout -b temp
           git remote -v
-          cp .github/scripts/temp.json report.json
+          cp ./scripts/temp.json report.json
           git add report.json
           git commit -m "Added temp data."
           git push \
