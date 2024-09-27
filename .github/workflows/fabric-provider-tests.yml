@@ -160,5 +160,4 @@ jobs:
 
       - name: Push to target repository
         run: |
-          git push -u \
-          dashboard-origin temp --force
+          git push -u dashboard-origin temp
