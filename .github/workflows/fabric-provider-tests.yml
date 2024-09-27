@@ -139,19 +139,20 @@ jobs:
           git clone \
           https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git
 
-      - name: Git Pull
-        run: |
-          git pull \
-          https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git main
-          git branch -a
+      # - name: Git Pull
+      #   run: |
+      #     git pull \
+      #     https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git main
+      #     git branch -a
 
       - name: Copy generated file to target repository
         run: |
           cd fabric-airflow-system-dashboard/_data
           git branch
+          git checkout -b temp
           git remote -v
           cp .github/scripts/temp.json report.json
           git add report.json
           git commit -m "Added temp data."
           git push \
-          https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git
+          https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/fabric-airflow-system-dashboard.git temp --force-with-lease
