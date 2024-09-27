@@ -139,9 +139,9 @@ jobs:
         uses: fixpoint/azblob-download-artifact@v3
         with:
           connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-          name: report.json
+          name: gold-report.json
           container: consolidate-blob
-          path: consolidate-blob/gold-report.json
+          path: consolidate-blob/
       
       - name: Push Test file to dashboard repo
         uses: dmnemec/copy_file_to_another_repo_action@main
