@@ -152,7 +152,7 @@ jobs:
           git branch
           git checkout -b temp
           git remote -v
-          cp .github/scripts/temp.json fabric-airflow-system-dashboard/_data/report.json
+          cp .github/scripts/temp.json fabric-airflow-system-dashboard/_data/
           git add report.json
           git commit -m "Added temp data."
           git push \
