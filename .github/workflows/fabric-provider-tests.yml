@@ -141,7 +141,7 @@ jobs:
           connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
           name: report.json
           container: consolidate-blob
-          path: consolidate-report/report.json
+          path: consolidate-report/gold-report.json
       
       - name: Push Test file to dashboard repo
         uses: dmnemec/copy_file_to_another_repo_action@main
