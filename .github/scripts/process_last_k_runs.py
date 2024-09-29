@@ -15,7 +15,7 @@ def preprocess_blob_data(report_group_by_testcases: dict, blob_data):
     """
     test_run = json.loads(blob_data)
     for _index, item in enumerate(test_run):
-        testname = item["name"]
+        testname = item["classname"]
         if testname not in report_group_by_testcases:
             report_group_by_testcases[testname] = {
                 "last_runs": [
@@ -54,7 +54,6 @@ def upload_blob(connection_string: str, container_name: str, blob_name: str, dat
         blob_client = container_client.get_blob_client(blob_name)
 
         # Upload the file
-        # with open(file_path, "rb") as data:
         blob_client.upload_blob(data, overwrite=True)  # Set overwrite=True to replace if blob already exists
 
         # print(f"File '{file_path}' uploaded to blob '{blob_name}' in container '{container_name}'.")
@@ -83,7 +82,6 @@ def consolidate_runs(connection_string: str, container_name: str, k=10):
         blob_count = 0
         blob_list = container_client.list_blobs()
         if blob_list is not None:
-            print("blob_list", blob_list)
             for blob in blob_list:
                 if blob_count > k:
                     break
@@ -99,14 +97,6 @@ def consolidate_runs(connection_string: str, container_name: str, k=10):
                 {"name": key, **value} for key, value in report_group_by_testcases.items()
             ]
 
-            # Write it to json file
-            # with open("consolidate-blob/report.json", "w") as json_file:
-            #     json.dump(report_group_by_testcases_list, json_file, indent=4)
-
-            # Upload blob
-            # upload_blob(
-            #     connection_string, "consolidate-blob", "gold-report.json", "consolidate-blob/report.json"
-            # )
             upload_blob(
                 connection_string,
                 "consolidate-blob",
