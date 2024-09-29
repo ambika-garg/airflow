@@ -33,7 +33,7 @@ def preprocess_blob_data(report_group_by_testcases: dict, blob_data):
             )
 
 
-def upload_blob(connection_string: str, container_name: str, blob_name: str, file_path: str) -> None:
+def upload_blob(connection_string: str, container_name: str, blob_name: str, data: str) -> None:
     """
     Upload a file to Azure Blob Storage.
 
@@ -54,12 +54,11 @@ def upload_blob(connection_string: str, container_name: str, blob_name: str, fil
         blob_client = container_client.get_blob_client(blob_name)
 
         # Upload the file
-        with open(file_path, "rb") as data:
-            blob_client.upload_blob(
-                data, overwrite=True
-            )  # Set overwrite=True to replace if blob already exists
+        # with open(file_path, "rb") as data:
+        blob_client.upload_blob(data, overwrite=True)  # Set overwrite=True to replace if blob already exists
 
-        print(f"File '{file_path}' uploaded to blob '{blob_name}' in container '{container_name}'.")
+        # print(f"File '{file_path}' uploaded to blob '{blob_name}' in container '{container_name}'.")
+        print(f"Data uploaded to blob '{blob_name}' in container '{container_name}'.")
 
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -101,12 +100,18 @@ def consolidate_runs(connection_string: str, container_name: str, k=10):
             ]
 
             # Write it to json file
-            with open("consolidate-blob/report.json", "w") as json_file:
-                json.dump(report_group_by_testcases_list, json_file, indent=4)
+            # with open("consolidate-blob/report.json", "w") as json_file:
+            #     json.dump(report_group_by_testcases_list, json_file, indent=4)
 
             # Upload blob
+            # upload_blob(
+            #     connection_string, "consolidate-blob", "gold-report.json", "consolidate-blob/report.json"
+            # )
             upload_blob(
-                connection_string, "consolidate-blob", "gold-report.json", "consolidate-blob/report.json"
+                connection_string,
+                "consolidate-blob",
+                "gold-report.json",
+                json.dumps(report_group_by_testcases_list),
             )
         else:
             print("No blobs found or container doesn't exist.")
