@@ -113,16 +113,9 @@ jobs:
         run: |
           python .github/scripts/process_artifact.py
 
-      - name: Get Last k runs and consolidate
+      - name: Consolidate last k runs and upload to Azure Blob Storage
         run: |
-          python .github/scripts/get_last_10_runs.py
-
-      - name: Upload consolidate report as artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: consolidate-report
-          path: consolidate-blob/report.json
-
+          python .github/scripts/process_last_k_runs.py
 
   Display-System-Tests:
     runs-on: ubuntu-latest
@@ -140,7 +133,7 @@ jobs:
           curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
     # Step 2: Download the file from Azure Blob Storage
-      - name: Download Blob from Azure Storage
+      - name: Download Consolidated-K-Run Report from Azure Storage
         env:
           AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
           AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}

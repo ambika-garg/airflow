@@ -254,3 +254,5 @@ licenses/LICENSES-ui.txt
 
 # airflow-build-dockerfile and correconding ignore file
 airflow-build-dockerfile*
+tests/system/providers/microsoft/azure/delele_file.py
+tests/system/providers/microsoft/azure/example_mock_test.py
