@@ -74,6 +74,7 @@ body:
         - jdbc
         - jenkins
         - microsoft-azure
+        - microsoft-fabric
         - microsoft-mssql
         - microsoft-psrp
         - microsoft-winrm
