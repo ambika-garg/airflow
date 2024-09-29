@@ -13,14 +13,14 @@ JSON_OUTPUT_PATH = "pytest-report/processed-report.json"
 def parse_xml_to_json(xml_content):
     # Parse XML content
     root = ET.fromstring(xml_content)
-    
+
     # Helper function to convert XML elements to dictionary
     def elem_to_dict(elem):
         # Convert attributes to dictionary
         data = elem.attrib.copy()
         # Add children if they exist
         if elem.text and elem.text.strip():
-            data['text'] = elem.text.strip()
+            data["text"] = elem.text.strip()
         # Add child elements
         for child in elem:
             child_data = elem_to_dict(child)
@@ -36,21 +36,21 @@ def parse_xml_to_json(xml_content):
 
     # Convert the root element to dictionary
     data = elem_to_dict(root)
-        
+
     # Create a testcase-wise structure
     testcases = []
-    if 'testsuite' in data:
-        testsuite = data['testsuite']        
-        timestamp = testsuite.get('timestamp', None)
-        if 'testcase' in testsuite:
-            for testcase in testsuite['testcase']:
+    if "testsuite" in data:
+        testsuite = data["testsuite"]
+        timestamp = testsuite.get("timestamp", None)
+        if "testcase" in testsuite:
+            for testcase in testsuite["testcase"]:
                 testcaseobj = {}
-                testcaseobj['name'] = testcase.get('name', None)
-                testcaseobj['time'] = testcase.get('time', None)
-                testcaseobj['classname'] = testcase.get('classname', None)
-                testcaseobj['failure'] = testcase.get('failure', None)
-                testcaseobj['timestamp'] = timestamp
-                
+                testcaseobj["name"] = testcase.get("name", None)
+                testcaseobj["time"] = testcase.get("time", None)
+                testcaseobj["classname"] = testcase.get("classname", None)
+                testcaseobj["failure"] = testcase.get("failure", None)
+                testcaseobj["timestamp"] = timestamp
+
                 testcases.append(testcaseobj)
 
     return testcases, timestamp
@@ -58,13 +58,13 @@ def parse_xml_to_json(xml_content):
 
 def upload_blob(connection_string: str, container_name: str, blob_name: str, file_path: str) -> None:
     """
-    Uploads a file to Azure Blob Storage.
+    Upload a file to Azure Blob Storage.
 
-    :param connection_string: The connection string to the Azure Storage account.
-    :param container_name: The name of the container where the blob will be uploaded.
-    :param blob_name: The name of the blob in the container.
-    :param file_path: The path to the local file to be uploaded.
-    :raises ResourceExistsError: If the blob already exists and the upload is not allowed to overwrite.
+    :param connection_string: Provide the connection string to the Azure Storage account.
+    :param container_name: Specify the name of the container where the blob will be uploaded.
+    :param blob_name: Define the name of the blob in the container.
+    :param file_path: Indicate the path to the local file to be uploaded.
+    :raises ResourceExistsError: Raise if the blob already exists and the upload is not allowed to overwrite.
     """
     try:
         # Create a BlobServiceClient
@@ -112,6 +112,9 @@ def save_json(json_data, file_path):
 if __name__ == "__main__":
     connection_string = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
     output_container_name = "airflow-system-dashboard-output"
+
+    if not connection_string:
+        raise ValueError("No connection string provided for Azure Blob Storage.")
 
     if os.path.exists(XML_ARTIFACT_PATH):
         blob_name, json_data = process_file(XML_ARTIFACT_PATH)
