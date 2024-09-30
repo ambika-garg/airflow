@@ -6,14 +6,15 @@ import os
 from azure.storage.blob import BlobServiceClient
 
 
-def preprocess_blob_data(report_group_by_testcases: dict, blob_data):
+def preprocess_blob_data(report_group_by_testcases: dict, test_run_data) -> None:
     """
     Preprocess the blob data to extract the required information.
 
-    :param blob_data: The data read from the blob.
-    :return: Preprocessed data.
+    :param report_group_by_testcases: The consolidated dict to store the test run data.
+    :param test_run_data: Test run data to added in the consolidated dict `report group by testcases`.
+    :return: None.
     """
-    test_run = json.loads(blob_data)
+    test_run = json.loads(test_run_data)
     for _index, item in enumerate(test_run):
         testname = item["classname"]
         if testname not in report_group_by_testcases:
@@ -25,12 +26,15 @@ def preprocess_blob_data(report_group_by_testcases: dict, blob_data):
                         if item["failure"]
                         else "success",  # Improve it, need to consider all the test cases like failure, success, skipped, cancelled, etc.
                     }
-                ]
+                ],
+                "last_run_duration": item["time"],
             }
         else:
             report_group_by_testcases[testname]["last_runs"].append(
                 {"timestamp": item["timestamp"], "type": "failure" if item["failure"] else "success"}
             )
+            # Overwrite the last run duration as blobs are sorted by timestamp
+            report_group_by_testcases[testname]["last_run_duration"] = item["time"]
 
 
 def upload_blob(connection_string: str, container_name: str, blob_name: str, data: str) -> None:
@@ -56,20 +60,19 @@ def upload_blob(connection_string: str, container_name: str, blob_name: str, dat
         # Upload the file
         blob_client.upload_blob(data, overwrite=True)  # Set overwrite=True to replace if blob already exists
 
-        # print(f"File '{file_path}' uploaded to blob '{blob_name}' in container '{container_name}'.")
         print(f"Data uploaded to blob '{blob_name}' in container '{container_name}'.")
 
     except Exception as e:
         print(f"An error occurred: {e}")
 
 
-def consolidate_runs(connection_string: str, container_name: str, k=10):
+def consolidate_runs(connection_string: str, container_name: str, k=10) -> None:
     """
     List all blobs in the specified Azure Blob Storage container.
 
     :param connection_string: Connection string to the Azure Blob Storage account.
     :param container_name: The name of the container in which blobs are listed.
-    :return: List of blob names.
+    :return: None
     """
     # Create a BlobServiceClient object using the connection string
     blob_service_client = BlobServiceClient.from_connection_string(connection_string)
@@ -82,15 +85,16 @@ def consolidate_runs(connection_string: str, container_name: str, k=10):
         blob_count = 0
         blob_list = container_client.list_blobs()
         if blob_list is not None:
-            for blob in blob_list:
+            sorted_blobs = sorted(blob_list, key=lambda b: b.name)
+            for blob in sorted_blobs:
                 if blob_count > k:
                     break
                 blob_client = container_client.get_blob_client(blob)  # type: ignore
-                blob_data = blob_client.download_blob().readall()
+                test_run_data = blob_client.download_blob().readall()
                 blob_count += 1
 
                 # Preprocess the blob data
-                preprocess_blob_data(report_group_by_testcases, blob_data)
+                preprocess_blob_data(report_group_by_testcases, test_run_data)
 
             # Convert the dictionary to a list
             report_group_by_testcases_list = [
