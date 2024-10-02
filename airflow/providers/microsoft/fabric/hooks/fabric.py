@@ -273,7 +273,7 @@ class FabricHook(BaseHook):
             item_run_status = item_run_details["status"]
             if item_run_status in FabricRunItemStatus.TERMINAL_STATUSES:
                 return item_run_status == target_status
-            self.log.info("Sleeping for %s. The pipeline state is %s.", check_interval, item_run_status)
+            self.log.info("Sleeping for %s. The item run state is %s.", check_interval, item_run_status)
             time.sleep(check_interval)
         raise FabricRunItemException(
             f"Item run did not reach the target status {target_status} within the {timeout} seconds."
