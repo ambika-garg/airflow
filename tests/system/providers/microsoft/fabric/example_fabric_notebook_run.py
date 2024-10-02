@@ -16,7 +16,7 @@
 # under the License.
 
 """
-This is an example dag for using the FabricRunItemOperator.
+This is an example dag for using the FabricRunItemOperator to trigger Microsoft Fabric notebook.
 """
 
 from __future__ import annotations
@@ -32,7 +32,7 @@ from airflow.models.baseoperator import chain
 from airflow.providers.microsoft.fabric.operators.fabric import FabricRunItemOperator
 from airflow.settings import Session
 
-DAG_ID = "run_fabric_item"
+DAG_ID = "run_fabric_notebook"
 SYSTEM_TESTS_ENV_NAME = "SYSTEM_TESTS_FABRIC"
 CONNECTION_ID = "fabric_conn"
 
@@ -80,54 +80,30 @@ with DAG(
 
     create_connection_task = create_connection(connection_id=CONNECTION_ID)
 
-    # Region: West US Testuser1
     # [START howto_operator_fabric_run_notebook_sync]
-    # run_notebook_task_sync = FabricRunItemOperator(
-    #     task_id="run_notebook_sync",
-    #     workspace_id="de1004ac-eef9-4851-adac-92c09719dd8e",
-    #     item_id="ffdd7321-0938-4ad5-bfc0-f38a1000380f",
-    #     fabric_conn_id="fabric_conn",
-    #     job_type="RunNotebook",
-    #     wait_for_termination=True,
-    #     deferrable=False,
-    # )
+    run_notebook_task_sync = FabricRunItemOperator(
+        task_id="run_notebook_sync",
+        workspace_id="de1004ac-eef9-4851-adac-92c09719dd8e",
+        item_id="ffdd7321-0938-4ad5-bfc0-f38a1000380f",
+        fabric_conn_id="fabric_conn",
+        job_type="RunNotebook",
+        wait_for_termination=True,
+        check_interval=10,
+        deferrable=False,
+    )
     # [END howto_operator_fabric_run_notebook_sync]
 
     # [START howto_operator_fabric_run_notebook_async]
-    run_notebook_task_async = FabricRunItemOperator(
-        task_id="run_notebook_async",
-        workspace_id="de1004ac-eef9-4851-adac-92c09719dd8e",
-        item_id="ffdd7321-0938-4ad5-bfc0-f38a1000380f",
-        fabric_conn_id=CONNECTION_ID,
-        job_type="RunNotebook",
-        wait_for_termination=True,
-        deferrable=True,
-    )
-    # [END howto_operator_fabric_run_notebook_async]
-
-    # [START howto_operator_fabric_run_pipeline_sync]
-    # run_pipeline_task_sync = FabricRunItemOperator(
-    #     task_id="run_pipeline_sync",
+    # run_notebook_task_async = FabricRunItemOperator(
+    #     task_id="run_notebook_async",
     #     workspace_id="de1004ac-eef9-4851-adac-92c09719dd8e",
-    #     item_id="3e5f8462-c071-4243-af71-76085cfe2fb6",
-    #     fabric_conn_id="fabric_conn",
-    #     job_type="Pipeline",
-    #     wait_for_termination=True,
-    #     deferrable=False,
-    # )
-    # [END howto_operator_fabric_run_pipeline_sync]
-
-    # [START howto_operator_fabric_run_pipeline_async]
-    # run_pipeline_task_async = FabricRunItemOperator(
-    #     task_id="run_pipeline_async",
-    #     workspace_id="de1004ac-eef9-4851-adac-92c09719dd8e",
-    #     item_id="3e5f8462-c071-4243-af71-76085cfe2fb6",
-    #     fabric_conn_id="fabric_conn",
-    #     job_type="Pipeline",
+    #     item_id="ffdd7321-0938-4ad5-bfc0-f38a1000380f",
+    #     fabric_conn_id=CONNECTION_ID,
+    #     job_type="RunNotebook",
     #     wait_for_termination=True,
     #     deferrable=True,
     # )
-    # [END howto_operator_fabric_run_pipeline_async]
+    # [END howto_operator_fabric_run_notebook_async]
 
     @task(task_id="delete_connection")
     def delete_connection(connection_id: str) -> None:
@@ -143,10 +119,8 @@ with DAG(
         # TEST SETUP
         create_connection_task,
         # TEST BODY
-        # run_notebook_task_sync,
-        run_notebook_task_async,
-        # run_pipeline_task_sync,
-        # run_pipeline_task_async,
+        run_notebook_task_sync,
+        # run_notebook_task_async,
         # TEST TEARDOWN
         delete_connection_task,
     )
