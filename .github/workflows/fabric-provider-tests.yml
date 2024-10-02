@@ -43,14 +43,19 @@ jobs:
       - name: Run System Tests for Microsoft Fabric Provider
         id: system-tests-for-microsoft-fabric
         env:
-          DATASET_ID: "${{ secrets.DATASET_ID }}"
-          GROUP_ID: "${{ secrets.GROUP_ID }}"
-          CLIENT_ID: "${{ secrets.CLIENT_ID }}"
-          CLIENT_SECRET: "${{ secrets.CLIENT_SECRET }}"
-          TENANT_ID: "${{ secrets.TENANT_ID }}"
+          SYSTEM_TESTS_FABRIC_DATASET_ID: "${{ secrets.DATASET_ID }}"
+          SYSTEM_TESTS_FABRIC_GROUP_ID: "${{ secrets.GROUP_ID }}"
+          SYSTEM_TESTS_FABRIC_CLIENT_ID: "${{ secrets.CLIENT_ID }}"
+          # SYSTEM_TESTS_FABRIC_CLIENT_SECRET: "${{ secrets.CLIENT_SECRET }}"
+          SYSTEM_TESTS_FABRIC_REFRESH_TOKEN: "${{ secrets.REFRESH_TOKEN }}"
+          SYSTEM_TESTS_FABRIC_TENANT_ID: "${{ secrets.TENANT_ID }}"
         run: |
           breeze shell << EOF
           printenv
+          pytest tests/system/providers/microsoft/fabric/example_fabric_item_run.py \
+          tests/system/providers/microsoft/fabric/example_mock_system_test.py \
+          --system microsoft \
+          --junitxml=tests/pytest-report.xml
           EOF
 # breeze testing tests \
 # tests/system/providers/microsoft/fabric/example_fabric_item_run.py \
