@@ -313,16 +313,23 @@ class KiotaRequestAdapterHook(BaseHook):
         headers: dict[str, str] | None = None,
         data: dict[str, Any] | str | BytesIO | None = None,
     ) -> RequestInformation:
+        self.log.info("1")
         request_information = RequestInformation()
         request_information.path_parameters = path_parameters or {}
         request_information.http_method = Method(method.strip().upper())
         request_information.query_parameters = self.encoded_query_parameters(query_parameters)
+        self.log.info("2")
+
         if url.startswith("http"):
+            self.log.info("3")
             request_information.url = url
         elif request_information.query_parameters.keys():
+            self.log.info("4")
             query = ",".join(request_information.query_parameters.keys())
             request_information.url_template = f"{{+baseurl}}/{self.normalize_url(url)}{{?{query}}}"
         else:
+            self.log.info("5")
+            self.log.info("{+baseurl}")
             request_information.url_template = f"{{+baseurl}}/{self.normalize_url(url)}"
         if not response_type:
             request_information.request_options[ResponseHandlerOption.get_key()] = ResponseHandlerOption(

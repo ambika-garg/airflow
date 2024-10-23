@@ -140,6 +140,7 @@ class FabricHook(BaseHook):
             "refresh_token": refresh_token,
             "scope": scopes,
         }
+
         if client_secret:
             data["client_secret"] = client_secret
 
