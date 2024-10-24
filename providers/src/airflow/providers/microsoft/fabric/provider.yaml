@@ -36,7 +36,7 @@ integrations:
     external-doc-url: https://learn.microsoft.com/en-us/fabric/
     how-to-guide:
       - /docs/apache-airflow-providers-microsoft-fabric/operators/batch.rst
-    logo: /integration-logos/azure/Microsoft-Azure-Batch.png
+    # logo: /integration-logos/azure/Microsoft-Azure-Batch.png
     tags: [fabric]
 
 operators:
