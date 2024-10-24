@@ -24,7 +24,7 @@ FabricRunItemOperator
 Use the
 :class:`~airflow.providers.microsoft.fabric.operators.fabric.FabricRunItemOperator` to trigger an item on Microsoft Fabric
 
-Below is an example of using this operator to trigger an item on Microsoft Fabric
+Below is an example of using this operator to trigger a Microsoft Fabric notebook
 
 .. exampleinclude:: /../../tests/system/providers/microsoft/fabric/example_fabric_item_run.py
     :language: python
