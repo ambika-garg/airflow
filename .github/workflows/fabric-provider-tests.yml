@@ -34,9 +34,9 @@ jobs:
       - name: Rebase Dev-Fork with Upstream
         run: |
           git checkout dev-fabric
-        # git rebase upstream/main
-        # git push https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/airflow.git \
-        # dev-fabric --force-with-lease
+          git rebase upstream/main
+          git push https://${{ secrets.AIRFLOW_FORK_TOKEN }}@github.com/ambika-garg/airflow.git \
+          dev-fabric --force-with-lease
 
       - name: Install Breeze
         uses: ./.github/actions/breeze
