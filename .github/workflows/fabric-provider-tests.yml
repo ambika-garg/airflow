@@ -59,9 +59,9 @@ jobs:
           printenv SYSTEM_TESTS_FABRIC_CLIENT_ID
 
           breeze testing tests \
-          tests/system/providers/microsoft/fabric/example_fabric_notebook_run.py \
-          tests/system/providers/microsoft/fabric/example_fabric_pipeline_run.py \
-          tests/system/providers/microsoft/fabric/example_mock_system_test.py \
+          providers/tests/system/microsoft/fabric/example_fabric_notebook_run.py \
+          providers/tests/system/microsoft/fabric/example_fabric_pipeline_run.py \
+          providers/tests/system/microsoft/fabric/example_mock_system_test.py \
           --junitxml=tests/pytest-report.xml
 
       - name: Upload Raw System Test Report to Github artifact storage
