@@ -355,7 +355,7 @@ class FabricAsyncHook(FabricHook):
         client_id = connection.login
         client_secret = connection.extra_dejson.get("clientSecret")
         refresh_token = connection.password
-        scopes = connection.extra_dejson.get("scopes", FABRIC_SCOPES)
+        scopes = connection.extra_dejson.get("scopes") or FABRIC_SCOPES
 
         data = {
             "grant_type": "refresh_token",
@@ -363,6 +363,7 @@ class FabricAsyncHook(FabricHook):
             "refresh_token": refresh_token,
             "scope": scopes,
         }
+
         if client_secret:
             data["client_secret"] = client_secret
 

@@ -87,21 +87,21 @@ with DAG(
         item_id="3e5f8462-c071-4243-af71-76085cfe2fb6",
         fabric_conn_id="fabric_conn",
         job_type="Pipeline",
-        wait_for_termination=True,
+        wait_for_termination=False,
         deferrable=False,
     )
     # [END howto_operator_fabric_run_pipeline_sync]
-
+    # Test west user admin1, agarg-workspace
     # [START howto_operator_fabric_run_pipeline_async]
-    # run_pipeline_task_async = FabricRunItemOperator(
-    #     task_id="run_pipeline_async",
-    #     workspace_id="de1004ac-eef9-4851-adac-92c09719dd8e",
-    #     item_id="3e5f8462-c071-4243-af71-76085cfe2fb6",
-    #     fabric_conn_id="fabric_conn",
-    #     job_type="Pipeline",
-    #     wait_for_termination=True,
-    #     deferrable=True,
-    # )
+    run_pipeline_task_async = FabricRunItemOperator(
+        task_id="run_pipeline_async",
+        workspace_id="de1004ac-eef9-4851-adac-92c09719dd8e",
+        item_id="3e5f8462-c071-4243-af71-76085cfe2fb6",
+        fabric_conn_id="fabric_conn",
+        job_type="Pipeline",
+        wait_for_termination=True,
+        deferrable=True,
+    )
     # [END howto_operator_fabric_run_pipeline_async]
 
     @task(task_id="delete_connection")
@@ -119,12 +119,12 @@ with DAG(
         create_connection_task,
         # TEST BODY
         run_pipeline_task_sync,
-        # run_pipeline_task_async,
+        run_pipeline_task_async,
         # TEST TEARDOWN
         delete_connection_task,
     )
 
-    from tests.system.utils.watcher import watcher
+    from tests_common.test_utils.watcher import watcher
 
     # This test needs watcher in order to properly mark success/failure
     # when "tearDown" task with trigger rule is part of the DAG
