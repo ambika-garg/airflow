@@ -28,13 +28,6 @@
    Connection types <connections>
    Operators <operators>
 
-.. toctree::
-   :hidden:
-   :maxdepth: 1
-   :caption: System tests
-
-   System Tests <_api/tests/system/providers/microsoft/fabric/index>
-
 
 .. toctree::
    :hidden:
@@ -44,5 +37,13 @@
    Example DAGs <https://github.com/apache/airflow/tree/providers-microsoft-fabric/|version|/tests/system/providers/microsoft/fabric>
    PyPI Repository <https://pypi.org/project/apache-airflow-providers-microsoft-fabric/>
    Installing from sources <installing-providers-from-sources>
+
+
+.. toctree::
+   :hidden:
+   :maxdepth: 1
+   :caption: System tests
+
+   System Tests <_api/tests/system/microsoft/fabric/index>
 
 .. THE REMAINDER OF THE FILE IS AUTOMATICALLY GENERATED. IT WILL BE OVERWRITTEN AT RELEASE TIME!
