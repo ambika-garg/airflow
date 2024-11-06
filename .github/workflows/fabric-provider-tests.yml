@@ -64,7 +64,7 @@ jobs:
           --junitxml=tests/pytest-report.xml
 
       - name: Upload Raw System Test Report to Github artifact storage
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: success() || failure()
         with:
           name: pytest-report
@@ -102,7 +102,7 @@ jobs:
           git config --global user.email "ambikagarg1101@gmail.com"
 
       - name: Download System Test Report
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: pytest-report
           path: pytest-report
