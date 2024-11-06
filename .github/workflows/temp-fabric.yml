@@ -174,7 +174,6 @@
               source_file: '.github/scripts/temp.json'
               destination_repo: 'Azure/ApacheAirflowProvider'
               destination_folder: '_data'
-              user_email: 'ambikagarg1101@gmail.com'
+              user_email: 'v-ambikagarg@microsoft.com'
               user_name: 'Ambika Garg'
               commit_message: 'Add test report to dashboard repo'
-
