@@ -18,6 +18,7 @@ def preprocess_blob_data(report_group_by_testcases: dict, test_run_data) -> None
     for _index, item in enumerate(test_run):
         testname = item["classname"]
         if testname not in report_group_by_testcases:
+            # initialize new test case.
             report_group_by_testcases[testname] = {
                 "last_runs": [
                     {
@@ -33,8 +34,8 @@ def preprocess_blob_data(report_group_by_testcases: dict, test_run_data) -> None
             report_group_by_testcases[testname]["last_runs"].append(
                 {"timestamp": item["timestamp"], "type": "failure" if item["failure"] else "success"}
             )
-            # Overwrite the last run duration as blobs are sorted by timestamp
-            report_group_by_testcases[testname]["last_run_duration"] = item["time"]
+            # # Overwrite the last run duration as blobs are sorted by timestamp
+            # report_group_by_testcases[testname]["last_run_duration"] = item["time"]
 
 
 def upload_blob(connection_string: str, container_name: str, blob_name: str, data: str) -> None:
@@ -85,7 +86,7 @@ def consolidate_runs(connection_string: str, container_name: str, k=10) -> None:
         blob_count = 0
         blob_list = container_client.list_blobs()
         if blob_list is not None:
-            sorted_blobs = sorted(blob_list, key=lambda b: b.name)
+            sorted_blobs = sorted(blob_list, key=lambda b: b.name, reverse=True)
             for blob in sorted_blobs:
                 if blob_count > k:
                     break
@@ -93,7 +94,7 @@ def consolidate_runs(connection_string: str, container_name: str, k=10) -> None:
                 test_run_data = blob_client.download_blob().readall()
                 blob_count += 1
 
-                # Preprocess the blob data
+                # Preprocess the blob data - this will add the test run to the list of runs for a test case
                 preprocess_blob_data(report_group_by_testcases, test_run_data)
 
             # Convert the dictionary to a list
