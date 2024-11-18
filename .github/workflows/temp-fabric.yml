@@ -1,5 +1,5 @@
 ---
-    name: System dashboard workflow for Microsoft Fabric
+    name: System dashboard workflow for Microsoft Fabric - Azure Repo
     on:  # yamllint disable-line rule:truthy
       # schedule: []  # Disable the default schedule
       workflow_dispatch:  # Allows manual triggering
