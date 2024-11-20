@@ -59,7 +59,7 @@ jobs:
 
           printenv SYSTEM_TESTS_FABRIC_CLIENT_ID
 
-          breeze testing system-tests \
+          breeze testing system-tests --verbose\
           providers/tests/system/microsoft/fabric/example_fabric_notebook_run.py \
           providers/tests/system/microsoft/fabric/example_fabric_pipeline_run.py \
           --junitxml=tests/pytest-report.xml
