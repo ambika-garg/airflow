@@ -61,111 +61,111 @@ jobs:
 
           printenv SYSTEM_TESTS_FABRIC_CLIENT_ID
 
-          breeze build-image
+          breeze ci-image build
           
-          breeze testing system-tests --verbose\
-          providers/tests/system/microsoft/fabric/example_fabric_notebook_run.py \
-          providers/tests/system/microsoft/fabric/example_fabric_pipeline_run.py \
-          --junitxml=tests/pytest-report.xml
+  #         breeze testing system-tests --verbose\
+  #         providers/tests/system/microsoft/fabric/example_fabric_notebook_run.py \
+  #         providers/tests/system/microsoft/fabric/example_fabric_pipeline_run.py \
+  #         --junitxml=tests/pytest-report.xml
 
-      - name: Upload Raw System Test Report to Github artifact storage
-        uses: actions/upload-artifact@v4
-        if: success() || failure()
-        with:
-          name: pytest-report
-          path: tests/pytest-report.xml  # path of the file to upload
+  #     - name: Upload Raw System Test Report to Github artifact storage
+  #       uses: actions/upload-artifact@v4
+  #       if: success() || failure()
+  #       with:
+  #         name: pytest-report
+  #         path: tests/pytest-report.xml  # path of the file to upload
 
-      - name: Upload System Test report to Azure Blob storage
-        uses: fixpoint/azblob-upload-artifact@v4
-        if: success() || failure()
-        with:
-          connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-          name: pytest-report.xml
-          container: airflow-system-dashboard-input
-          path: tests/pytest-report.xml
+  #     - name: Upload System Test report to Azure Blob storage
+  #       uses: fixpoint/azblob-upload-artifact@v4
+  #       if: success() || failure()
+  #       with:
+  #         connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+  #         name: pytest-report.xml
+  #         container: airflow-system-dashboard-input
+  #         path: tests/pytest-report.xml
 
-  preprocess:
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-      REPO_OWNER: ${{ github.repository_owner }}
-      REPO_NAME: ${{ github.repository }}
-      GITHUB_RUN_ID: ${{ github.run_id }}
-    needs: rebase
-    if: success() || failure()
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.AIRFLOW_FORK_TOKEN }}
-          persist-credentials: false
+  # preprocess:
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+  #     REPO_OWNER: ${{ github.repository_owner }}
+  #     REPO_NAME: ${{ github.repository }}
+  #     GITHUB_RUN_ID: ${{ github.run_id }}
+  #   needs: rebase
+  #   if: success() || failure()
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v3
+  #       with:
+  #         token: ${{ secrets.AIRFLOW_FORK_TOKEN }}
+  #         persist-credentials: false
 
-      - name: Set Up Git
-        run: |
-          git config --global user.name "Ambika Garg"
-          git config --global user.email "ambikagarg1101@gmail.com"
+  #     - name: Set Up Git
+  #       run: |
+  #         git config --global user.name "Ambika Garg"
+  #         git config --global user.email "ambikagarg1101@gmail.com"
 
-      - name: Download System Test Report
-        uses: actions/download-artifact@v4
-        with:
-          name: pytest-report
-          path: pytest-report
+  #     - name: Download System Test Report
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: pytest-report
+  #         path: pytest-report
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v4
+  #       with:
+  #         python-version: '3.10'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install azure-storage-blob azure-identity
+  #     - name: Install dependencies
+  #       run: |
+  #         python -m pip install --upgrade pip
+  #         pip install azure-storage-blob azure-identity
 
-      - name: Convert Report to JSON and upload to Azure Blob Storage
-        run: |
-          python .github/scripts/process_artifact.py
+  #     - name: Convert Report to JSON and upload to Azure Blob Storage
+  #       run: |
+  #         python .github/scripts/process_artifact.py
 
-      - name: Consolidate last k runs and upload to Azure Blob Storage
-        run: |
-          python .github/scripts/process_last_k_runs.py
+  #     - name: Consolidate last k runs and upload to Azure Blob Storage
+  #       run: |
+  #         python .github/scripts/process_last_k_runs.py
 
-  display-system-tests:
-    runs-on: ubuntu-latest
-    needs: preprocess
-    if: success() || failure()
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.AIRFLOW_FORK_TOKEN }}
-          persist-credentials: false
+  # display-system-tests:
+  #   runs-on: ubuntu-latest
+  #   needs: preprocess
+  #   if: success() || failure()
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v3
+  #       with:
+  #         token: ${{ secrets.AIRFLOW_FORK_TOKEN }}
+  #         persist-credentials: false
 
-      - name: Install Azure CLI
-        run: |
-          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+  #     - name: Install Azure CLI
+  #       run: |
+  #         curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
-    # Step 2: Download the file from Azure Blob Storage
-      - name: Download Consolidated-K-Run Report from Azure Storage
-        env:
-          AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
-          AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
-        run: |
-          az storage blob download \
-            --account-name $AZURE_STORAGE_ACCOUNT \
-            --account-key $AZURE_STORAGE_KEY \
-            --container-name consolidate-blob \
-            --name gold-report.json \
-            --file ./report.json
+  #   # Step 2: Download the file from Azure Blob Storage
+  #     - name: Download Consolidated-K-Run Report from Azure Storage
+  #       env:
+  #         AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
+  #         AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
+  #       run: |
+  #         az storage blob download \
+  #           --account-name $AZURE_STORAGE_ACCOUNT \
+  #           --account-key $AZURE_STORAGE_KEY \
+  #           --container-name consolidate-blob \
+  #           --name gold-report.json \
+  #           --file ./report.json
 
-      - name: Push Test file to Dashboard Repo
-        uses: dmnemec/copy_file_to_another_repo_action@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.AIRFLOW_FORK_TOKEN }}
-        with:
-          source_file: 'report.json'
-          destination_repo: 'ambika-garg/fabric-airflow-system-dashboard'
-          destination_folder: '_data'
-          user_email: 'ambikagarg1101@gmail.com'
-          user_name: 'Ambika Garg'
-          commit_message: 'Add test report to dashboard repo'
+  #     - name: Push Test file to Dashboard Repo
+  #       uses: dmnemec/copy_file_to_another_repo_action@main
+  #       env:
+  #         API_TOKEN_GITHUB: ${{ secrets.AIRFLOW_FORK_TOKEN }}
+  #       with:
+  #         source_file: 'report.json'
+  #         destination_repo: 'ambika-garg/fabric-airflow-system-dashboard'
+  #         destination_folder: '_data'
+  #         user_email: 'ambikagarg1101@gmail.com'
+  #         user_name: 'Ambika Garg'
+  #         commit_message: 'Add test report to dashboard repo'
