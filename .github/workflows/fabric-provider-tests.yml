@@ -60,6 +60,8 @@ jobs:
             && export SYSTEM_TESTS_FABRIC_TENANT_ID=${SYSTEM_TESTS_FABRIC_TENANT_ID}"
 
           printenv SYSTEM_TESTS_FABRIC_CLIENT_ID
+
+          breeze ci-image build
           
           breeze testing system-tests --verbose\
           providers/tests/system/microsoft/fabric/example_fabric_notebook_run.py \
