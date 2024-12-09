@@ -96,7 +96,7 @@ jobs:
             --file tests/pytest-report.xml \
             --auth-mode key \
             --account-key ${{ secrets.AZURE_STORAGE_KEY }}
-            --overwrite
+            --overwrite=True
 
   preprocess:
     runs-on: ubuntu-latest
