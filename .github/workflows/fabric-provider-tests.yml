@@ -96,6 +96,7 @@ jobs:
             --file tests/pytest-report.xml \
             --auth-mode key \
             --account-key ${{ secrets.AZURE_STORAGE_KEY }}
+            --blob-type block
 
   preprocess:
     runs-on: ubuntu-latest
