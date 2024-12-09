@@ -95,7 +95,7 @@ jobs:
             --name pytest-report.xml \
             --file tests/pytest-report.xml \
             --auth-mode key \
-            --account-key ${{ secrets.AZURE_STORAGE_KEY }}
+            --account-key ${{ secrets.AZURE_STORAGE_KEY }} \
             --overwrite=True
 
   preprocess:
