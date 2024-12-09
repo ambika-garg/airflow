@@ -5,6 +5,9 @@ on:  # yamllint disable-line rule:truthy
     # - cron: "*/15 * * * *"  # Runs every 15 minutes
   workflow_dispatch:  # Allows manual triggering
 jobs:
+  setup-azure-cli:
+    uses: ./.github/workflows/install-azure-cli.yml
+
   rebase:
     runs-on: ubuntu-latest
     env:
@@ -75,14 +78,24 @@ jobs:
           name: pytest-report
           path: tests/pytest-report.xml  # path of the file to upload
 
-      - name: Upload System Test report to Azure Blob storage
-        uses: fixpoint/azblob-upload-artifact@v4
-        if: success() || failure()
-        with:
-          connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-          name: pytest-report.xml
-          container: airflow-system-dashboard-input
-          path: tests/pytest-report.xml
+      # - name: Upload System Test report to Azure Blob storage
+      #   uses: fixpoint/azblob-upload-artifact@v4
+      #   if: success() || failure()
+      #   with:
+      #     connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+      #     name: pytest-report.xml
+      #     container: airflow-system-dashboard-input
+      #     path: tests/pytest-report.xml
+
+      - name: Upload System Test Report to Azure Blob Storage
+        run: |
+          az storage blob upload \
+            --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT }} \
+            --container-name airflow-system-dashboard-input \
+            --name pytest-report.xml \
+            --file tests/pytest-report.xml \
+            --auth-mode key \
+            --account-key ${{ secrets.AZURE_STORAGE_KEY }}
 
   preprocess:
     runs-on: ubuntu-latest
