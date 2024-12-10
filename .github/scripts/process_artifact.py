@@ -158,7 +158,7 @@ if __name__ == "__main__":
     if not connection_string:
         raise ValueError("No connection string provided for Azure Blob Storage.")
     if gold_container_name is None:
-        raise ValueError("Output container name is not provided for Azure Blob Storage.")
+        raise ValueError("Gold container name is not provided for Azure Blob Storage.")
 
     if os.path.exists(XML_ARTIFACT_PATH):
         blob_name, json_data = process_file(XML_ARTIFACT_PATH)

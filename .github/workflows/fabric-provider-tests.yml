@@ -97,6 +97,8 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+      GOLD_AZURE_STORAGE_CONTAINER_NAME: ${{ secrets.GOLD_AZURE_STORAGE_CONTAINER_NAME }}
+      SILVER_AZURE_STORAGE_CONTAINER_NAME: ${{ secrets.SILVER_AZURE_STORAGE_CONTAINER_NAME }}
       REPO_OWNER: ${{ github.repository_owner }}
       REPO_NAME: ${{ github.repository }}
       GITHUB_RUN_ID: ${{ github.run_id }}
