@@ -153,12 +153,12 @@ def save_json(json_data, file_path):
 
 if __name__ == "__main__":
     connection_string = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
-    gold_container_name = os.getenv("GOLD_AZURE_STORAGE_CONTAINER_NAME")
+    silver_container_name = os.getenv("SILVER_AZURE_STORAGE_CONTAINER_NAME")
 
     if not connection_string:
         raise ValueError("No connection string provided for Azure Blob Storage.")
-    if gold_container_name is None:
-        raise ValueError("Gold container name is not provided for Azure Blob Storage.")
+    if silver_container_name is None:
+        raise ValueError("Silver container name is not provided for Azure Blob Storage.")
 
     if os.path.exists(XML_ARTIFACT_PATH):
         blob_name, json_data = process_file(XML_ARTIFACT_PATH)
@@ -167,7 +167,7 @@ if __name__ == "__main__":
 
         upload_blob(
             connection_string=connection_string,
-            container_name=gold_container_name,
+            container_name=silver_container_name,
             blob_name=blob_name,
             file_path=JSON_OUTPUT_PATH,
         )

@@ -61,8 +61,6 @@ jobs:
             && export SYSTEM_TESTS_FABRIC_REFRESH_TOKEN=${SYSTEM_TESTS_FABRIC_REFRESH_TOKEN} \
             && export SYSTEM_TESTS_FABRIC_TENANT_ID=${SYSTEM_TESTS_FABRIC_TENANT_ID}"
 
-          printenv SYSTEM_TESTS_FABRIC_CLIENT_ID
-
           breeze ci-image build
           
           breeze testing system-tests --verbose \
