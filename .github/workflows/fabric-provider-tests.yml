@@ -78,14 +78,18 @@ jobs:
           path: tests/pytest-report.xml  # path of the file to upload
 
       - name: Upload System Test Report to Azure Blob Storage
+        env: 
+          AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
+          AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
+          BRONZE_AZURE_STORAGE_CONTAINER_NAME: ${{ secrets.BRONZE_AZURE_STORAGE_CONTAINER_NAME }}
         run: |
           az storage blob upload \
-            --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT }} \
-            --container-name airflow-system-dashboard-input \
+            --account-name $AZURE_STORAGE_ACCOUNT \
+            --container-name $BRONZE_AZURE_STORAGE_CONTAINER_NAME \
             --name pytest-report.xml \
             --file tests/pytest-report.xml \
             --auth-mode key \
-            --account-key ${{ secrets.AZURE_STORAGE_KEY }} \
+            --account-key $AZURE_STORAGE_KEY \
             --overwrite=True
 
   preprocess:
@@ -154,11 +158,12 @@ jobs:
         env:
           AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
           AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
+          GOLD_AZURE_STORAGE_CONTAINER_NAME: ${{ secrets.GOLD_AZURE_STORAGE_CONTAINER_NAME }}
         run: |
           az storage blob download \
             --account-name $AZURE_STORAGE_ACCOUNT \
             --account-key $AZURE_STORAGE_KEY \
-            --container-name consolidate-blob \
+            --container-name $GOLD_AZURE_STORAGE_CONTAINER_NAME \
             --name gold-report.json \
             --file ./report.json
 
