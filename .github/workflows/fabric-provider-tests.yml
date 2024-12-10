@@ -54,7 +54,6 @@ jobs:
           SYSTEM_TESTS_FABRIC_DATASET_ID: "${{ secrets.DATASET_ID }}"
           SYSTEM_TESTS_FABRIC_GROUP_ID: "${{ secrets.GROUP_ID }}"
           SYSTEM_TESTS_FABRIC_CLIENT_ID: "${{ secrets.CLIENT_ID }}"
-          # SYSTEM_TESTS_FABRIC_CLIENT_SECRET: "${{ secrets.CLIENT_SECRET }}"
           SYSTEM_TESTS_FABRIC_REFRESH_TOKEN: "${{ secrets.REFRESH_TOKEN }}"
           SYSTEM_TESTS_FABRIC_TENANT_ID: "${{ secrets.TENANT_ID }}"
         run: |
@@ -77,15 +76,6 @@ jobs:
         with:
           name: pytest-report
           path: tests/pytest-report.xml  # path of the file to upload
-
-      # - name: Upload System Test report to Azure Blob storage
-      #   uses: fixpoint/azblob-upload-artifact@v4
-      #   if: success() || failure()
-      #   with:
-      #     connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-      #     name: pytest-report.xml
-      #     container: airflow-system-dashboard-input
-      #     path: tests/pytest-report.xml
 
       - name: Upload System Test Report to Azure Blob Storage
         run: |
@@ -136,7 +126,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install azure-storage-blob azure-identity
 
-      - name: Convert Report to JSON and upload to Azure Blob Storage
+      - name: Convert xml report to json format and upload it to Azure Blob Storage
         run: |
           python .github/scripts/process_artifact.py
 
